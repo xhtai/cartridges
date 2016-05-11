@@ -2,7 +2,9 @@ Package: cartridges
 Title: Creates Signatures From Cartridge Case Images
 Version: 0.0.0.9000
 Authors@R: person("Xiao Hui", "Tai", email = "xtai@andrew.cmu.edu", role = c("aut", "cre"))
-Description: Reads, centers and plots cartridge case images. Implements a method of creating a signature from such images.
+Description: Reads, centers and plots cartridge case images. Implements
+	 a method of creating a signature from such images. This is work in 
+	 progress.
 URL: https://github.com/xhtai/cartridges
 Depends:
     R (>= 3.2.2)
