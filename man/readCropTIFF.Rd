@@ -27,6 +27,5 @@ in, returning a matrix with pixel values taking values
 \examples{
 LL1_3 <- readCropTIFF(system.file("extdata", "LL1_3.tif",
  package="cartridges"))
-
 }
 

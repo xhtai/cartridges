@@ -45,6 +45,7 @@
 #' @examples
 #' basis1919_8pixels_rad450_1000<-subsetBasis(basis1919,c(450,1000),8)
 #' center <- roughCenter(LL1_3, basis1919_8pixels_rad450_1000, 940)
+#' @export
 #'
 
 roughCenter<-function(image,basis,startingRow){
@@ -114,6 +115,7 @@ roughCenter<-function(image,basis,startingRow){
 #' @examples
 #' basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
 #' RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962,plot=TRUE)
+#' @export
 
 gridSearch<-function(image,basis,startingRow,startingColumn,plot){
     RSSdtf<-expand.grid(centeri=(startingRow-5):(startingRow+5),centerj=(startingColumn-5):(startingColumn+5))
@@ -163,6 +165,7 @@ gridSearch<-function(image,basis,startingRow,startingColumn,plot){
 #' RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962)
 #' surfacePlot(RSSdtf,main="Total RSS of Basis Functions \n
 #'              with Radius of 450-1000 Pixels")
+#' @export
 
 surfacePlot<-function(RSS,main){
     par(mar=c(2.1,2.1,5.1,2.1))

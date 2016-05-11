@@ -55,6 +55,5 @@ center resulting in the longest continuous string of zeros.
 \examples{
 basis1919_8pixels_rad450_1000<-subsetBasis(basis1919,c(450,1000),8)
 center <- roughCenter(LL1_3, basis1919_8pixels_rad450_1000, 940)
-
 }
 

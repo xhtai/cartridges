@@ -17,6 +17,7 @@ library(raster)
 #' @examples
 #' LL1_3 <- readCropTIFF(system.file("extdata", "LL1_3.tif",
 #'  package="cartridges"))
+#' @export
 #'
 readCropTIFF<-function(TIFFfilename,crop=TRUE){
     if (crop==TRUE) {
@@ -39,6 +40,7 @@ readCropTIFF<-function(TIFFfilename,crop=TRUE){
 #'
 #' @examples
 #' shifted <- shiftedImage(LL1_3, 910, 910)
+#' @export
 #'
 shiftedImage<-function(image,centeri,centerj){
     # default center is at (959,959)
@@ -75,6 +77,7 @@ shiftedImage<-function(image,centeri,centerj){
 #' @examples
 #' LL1_3_basis <- fitBasis(LL1_3,basis1919)
 #' fittedImage <- getFittedImage(LL1_3_basis,basis1919,1919)
+#' @export
 
 getFittedImage<-function(basisCoefficients,basis,dimension){
     fittedImage<-matrix(NA,nrow=dimension,ncol=dimension)
@@ -100,6 +103,7 @@ library(fields)
 #'
 #' @examples
 #' plotImage(LL1_3,"original",grayscale=FALSE)
+#' @export
 
 
 plotImage<-function(image,type,grayscale,main){

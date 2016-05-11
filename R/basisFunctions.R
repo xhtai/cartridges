@@ -28,7 +28,7 @@
 #' basis.
 #' @examples
 #' basis3 <- getBasisFunctions(3)
-#'
+#' @export
 
 getBasisFunctions<-function(dimension){
     m<-dimension
@@ -66,6 +66,7 @@ getBasisFunctions<-function(dimension){
 #' basis3 <- getBasisFunctions(3)
 #' basis3_rad1_4pixels <- subsetBasis(basis3,c(1,1),4)
 #'
+#' @export
 
 subsetBasis<-function(originalBasis,distFromCenter,numPixels){
     if (!missing(distFromCenter)){
@@ -109,6 +110,7 @@ subsetBasis<-function(originalBasis,distFromCenter,numPixels){
 #' basis3 <- getBasisFunctions(3)
 #' stats <- statisticsByBasisFunction(basis3[[2]],
 #'          matrix(1:9,nrow=3),c("numPixels","coef"))
+#' @export
 #'
 statisticsByBasisFunction<-function(ij,image,requestedStats){
     ret<-vector(mode="list",length=length(requestedStats))
@@ -140,6 +142,7 @@ statisticsByBasisFunction<-function(ij,image,requestedStats){
 #' @examples
 #' basis3 <- getBasisFunctions(3)
 #' sampleBasis <- fitBasis(matrix(1:9,nrow=3),basis3)
+#' @export
 
 fitBasis<-function(image,basis){
     imageBasis<-unlist(lapply(basis,function(x) statisticsByBasisFunction(x,image,c("numPixels","coef","RSS"))),use.names=FALSE)

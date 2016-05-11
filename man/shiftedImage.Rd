@@ -22,6 +22,5 @@ Shift a 1919 x 1919 image
 }
 \examples{
 shifted <- shiftedImage(LL1_3, 910, 910)
-
 }
 

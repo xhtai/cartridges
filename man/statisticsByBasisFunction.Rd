@@ -36,6 +36,5 @@ sum of pixel values.
 basis3 <- getBasisFunctions(3)
 stats <- statisticsByBasisFunction(basis3[[2]],
          matrix(1:9,nrow=3),c("numPixels","coef"))
-
 }
 
