@@ -1,8 +1,8 @@
-#' Read in a 1944 x 2592 TIFF cartridge image
+#' Read in a 2592 x 1944 TIFF cartridge image
 #'
 #' Images from the NIST Ballistics and Research Toolmark
 #' Database are in this standard format, with dimensions
-#' 1944 x 2592, and on a 255-grayscale. Images are read
+#' 2592 x 1944, and on a 255-grayscale. Images are read
 #' in, returning a matrix with pixel values taking values
 #' 0-255. By default images are cropped to square (1919 x
 #' 1919 pixels) for further processing.
@@ -10,7 +10,7 @@
 #' @param TIFFfilename location of TIFF file to be read in
 #' @param crop a logical value indicating whether the image should
 #' be cropped to 1919 x 1919 pixels
-#' @return A 1919 x 1919 (cropped) or 1944 x 2952 matrix
+#' @return A 1919 x 1919 (cropped) or 2592 x 1944 matrix
 #' containing pixel values from 0 to 255.
 #' @examples
 #' LL1_3 <- readCropTIFF(system.file("extdata", "LL1_3.tif",
@@ -74,7 +74,6 @@ shiftedImage<-function(image,centeri,centerj){
 #'
 #' @return A matrix of pixel values
 #' @examples
-#' data(LL1_3,basis1919)
 #' LL1_3_basis <- fitBasis(LL1_3,basis1919)
 #' fittedImage <- getFittedImage(LL1_3_basis,basis1919,1919)
 #' @export
@@ -100,7 +99,6 @@ getFittedImage<-function(basisCoefficients,basis,dimension){
 #' @param main title for plots with grayscale
 #'
 #' @examples
-#' data(LL1_3)
 #' plotImage(LL1_3,"original",grayscale=FALSE)
 #' @export
 

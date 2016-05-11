@@ -2,7 +2,7 @@
 % Please edit documentation in R/image.R
 \name{readCropTIFF}
 \alias{readCropTIFF}
-\title{Read in a 1944 x 2592 TIFF cartridge image}
+\title{Read in a 2592 x 1944 TIFF cartridge image}
 \usage{
 readCropTIFF(TIFFfilename, crop = TRUE)
 }
@@ -13,13 +13,13 @@ readCropTIFF(TIFFfilename, crop = TRUE)
 be cropped to 1919 x 1919 pixels}
 }
 \value{
-A 1919 x 1919 (cropped) or 1944 x 2952 matrix
+A 1919 x 1919 (cropped) or 2592 x 1944 matrix
 containing pixel values from 0 to 255.
 }
 \description{
 Images from the NIST Ballistics and Research Toolmark
 Database are in this standard format, with dimensions
-1944 x 2592, and on a 255-grayscale. Images are read
+2592 x 1944, and on a 255-grayscale. Images are read
 in, returning a matrix with pixel values taking values
 0-255. By default images are cropped to square (1919 x
 1919 pixels) for further processing.

@@ -43,7 +43,6 @@
 #' zeros.
 #'
 #' @examples
-#' data(LL1_3,basis1919)
 #' basis1919_8pixels_rad450_1000 <- subsetBasis(basis1919,c(450,1000),8)
 #' center <- roughCenter(LL1_3, basis1919_8pixels_rad450_1000, 940)
 #' @export
@@ -114,7 +113,6 @@ roughCenter<-function(image,basis,startingRow){
 #' squares of the fit.
 #'
 #' @examples
-#' data(LL1_3,basis1919)
 #' basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
 #' RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962,plot=TRUE)
 #' @export
@@ -163,7 +161,6 @@ gridSearch<-function(image,basis,startingRow,startingColumn,plot){
 #' @param main title of plot
 #'
 #' @examples
-#' data(LL1_3,basis1919)
 #' basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
 #' RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962)
 #' surfacePlot(RSSdtf,main="Total RSS of Basis Functions \n
