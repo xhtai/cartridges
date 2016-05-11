@@ -1,5 +1,3 @@
-library(raster)
-
 #' Read in a 1944 x 2592 TIFF cartridge image
 #'
 #' Images from the NIST Ballistics and Research Toolmark
@@ -21,9 +19,9 @@ library(raster)
 #'
 readCropTIFF<-function(TIFFfilename,crop=TRUE){
     if (crop==TRUE) {
-        ret<-raster::as.matrix(raster(TIFFfilename))[13:1931,337:2255]
+        ret<-raster::as.matrix(raster::raster(TIFFfilename))[13:1931,337:2255]
     } else {
-        ret<-raster::as.matrix(raster(TIFFfilename))
+        ret<-raster::as.matrix(raster::raster(TIFFfilename))
     }
     return(ret)
 }
@@ -39,6 +37,7 @@ readCropTIFF<-function(TIFFfilename,crop=TRUE){
 #' that are not available are set to 0.
 #'
 #' @examples
+#' data(LL1_3)
 #' shifted <- shiftedImage(LL1_3, 910, 910)
 #' @export
 #'
@@ -75,6 +74,7 @@ shiftedImage<-function(image,centeri,centerj){
 #'
 #' @return A matrix of pixel values
 #' @examples
+#' data(LL1_3,basis1919)
 #' LL1_3_basis <- fitBasis(LL1_3,basis1919)
 #' fittedImage <- getFittedImage(LL1_3_basis,basis1919,1919)
 #' @export
@@ -88,8 +88,6 @@ getFittedImage<-function(basisCoefficients,basis,dimension){
     return(fittedImage)
 }
 
-library(fields)
-
 
 #' Plot an image
 #'
@@ -102,6 +100,7 @@ library(fields)
 #' @param main title for plots with grayscale
 #'
 #' @examples
+#' data(LL1_3)
 #' plotImage(LL1_3,"original",grayscale=FALSE)
 #' @export
 
@@ -121,11 +120,10 @@ plotImage<-function(image,type,grayscale,main){
         plot(c(1,dimension), c(1,dimension),type="n",xaxt="n",yaxt="n",xlab = "", ylab = "",yaxs="i",xaxs="i",main=main)
         if (type=="original"){
             rasterImage(as.raster(image/255),1,1,dimension,dimension,interpolate=FALSE)
-            image.plot(legend.only=TRUE, zlim=c(0,255),col=gray(0:255/255))
+            fields::image.plot(legend.only=TRUE, zlim=c(0,255),col=gray(0:255/255))
         } else if (type=="residuals"){
             rasterImage(as.raster((image+255)/510),1,1,dimension,dimension,interpolate=FALSE)
-            image.plot(legend.only=TRUE, zlim=c(-255,255),col=gray(0:255/255),
-                        axis.args=list(at=seq(-250, 250, 50),
+            fields::image.plot(legend.only=TRUE, zlim=c(-255,255),col=gray(0:255/255),                  axis.args=list(at=seq(-250, 250, 50),
                                        labels=seq(-250, 250, 50),
                                        cex.axis=0.8))
         }

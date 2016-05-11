@@ -36,6 +36,7 @@ squares of the fit. Small values indicate a better
 fit and a more appropriate center.
 }
 \examples{
+data(LL1_3,basis1919)
 basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
 RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962,plot=TRUE)
 }

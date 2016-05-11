@@ -22,6 +22,7 @@ the grayscale is to be plotted.}
 Plot an image
 }
 \examples{
+data(LL1_3)
 plotImage(LL1_3,"original",grayscale=FALSE)
 }
 

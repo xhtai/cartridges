@@ -26,6 +26,7 @@ A matrix of pixel values
 Get fitted image from basis function coefficients
 }
 \examples{
+data(LL1_3,basis1919)
 LL1_3_basis <- fitBasis(LL1_3,basis1919)
 fittedImage <- getFittedImage(LL1_3_basis,basis1919,1919)
 }

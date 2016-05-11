@@ -43,7 +43,8 @@
 #' zeros.
 #'
 #' @examples
-#' basis1919_8pixels_rad450_1000<-subsetBasis(basis1919,c(450,1000),8)
+#' data(LL1_3,basis1919)
+#' basis1919_8pixels_rad450_1000 <- subsetBasis(basis1919,c(450,1000),8)
 #' center <- roughCenter(LL1_3, basis1919_8pixels_rad450_1000, 940)
 #' @export
 #'
@@ -113,6 +114,7 @@ roughCenter<-function(image,basis,startingRow){
 #' squares of the fit.
 #'
 #' @examples
+#' data(LL1_3,basis1919)
 #' basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
 #' RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962,plot=TRUE)
 #' @export
@@ -161,6 +163,7 @@ gridSearch<-function(image,basis,startingRow,startingColumn,plot){
 #' @param main title of plot
 #'
 #' @examples
+#' data(LL1_3,basis1919)
 #' basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
 #' RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962)
 #' surfacePlot(RSSdtf,main="Total RSS of Basis Functions \n
@@ -184,7 +187,7 @@ surfacePlot<-function(RSS,main){
     tmp[4]<-RSS$totalRSS[RSS$centeri==minI & RSS$centerj==maxJ]
     thetaToUse<-switch(EXPR=which.min(tmp),30,120,210,300)
 
-    persp(z=makeGrid,xlab=paste0("Row: ",min(RSS$centeri)," to ",max(RSS$centeri)),ylab=paste0("Column: ",min(RSS$centerj)," to ",max(RSS$centerj)),zlab="Total RSS",col="lightblue",main=main,theta=thetaToUse)
+    graphics::persp(z=makeGrid,xlab=paste0("Row: ",min(RSS$centeri)," to ",max(RSS$centeri)),ylab=paste0("Column: ",min(RSS$centerj)," to ",max(RSS$centerj)),zlab="Total RSS",col="lightblue",main=main,theta=thetaToUse)
     mtext(paste0("Smallest RSS at (",RSS$centeri[which.min(RSS$totalRSS)],", ",RSS$centerj[which.min(RSS$totalRSS)],")"))
 }
 
