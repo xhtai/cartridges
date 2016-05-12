@@ -10,8 +10,9 @@ Depends:
     R (>= 3.0)
 Imports:
 	raster,
-	rgdal,
 	fields
+Suggests:
+	rgdal
 License: What license is it under?
 LazyData: true
 RoxygenNote: 5.0.1

@@ -43,6 +43,8 @@ Then load the package using
 library(cartridges)
 ```
 
+For full functionality you will need to install the `rgdal` package
+
 Functions available
 -------------------
 
@@ -60,6 +62,8 @@ These are for centering the image, and the methodology is described further in t
 -   `roughCenter()`: computes a rough center location, to be used as a starting location for a grid search
 -   `gridSearch()`: searches a grid of possible locations for the center of the image
 -   `surfacePlot()`: produces a surface plot for determining the best location of the center
+
+Help files for each of these can be accessed using `help(functionName)` or `?functionName`, e.g. `help(plotImage)`.
 
 ### Methods for centering images
 

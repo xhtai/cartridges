@@ -22,7 +22,7 @@ match the number of basis functions in \code{basis}.}
 A matrix of pixel values
 }
 \description{
-From basis function coefficients, produce a matrix of 
+From basis function coefficients, produce a matrix of
 pixel values.
 }
 \examples{

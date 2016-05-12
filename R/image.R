@@ -18,6 +18,10 @@
 #' @export
 #'
 readCropTIFF<-function(TIFFfilename,crop=TRUE){
+    if (!requireNamespace("rgdal", quietly = TRUE)) {
+        stop("rgdal needed for this function to work. Please install it.",
+             call. = FALSE)
+    }
     if (crop==TRUE) {
         ret<-raster::as.matrix(raster::raster(TIFFfilename))[13:1931,337:2255]
     } else {
@@ -62,9 +66,9 @@ shiftedImage<-function(image,centeri,centerj){
 
 #' Get fitted image from basis function coefficients
 #'
-#' From basis function coefficients, produce a matrix of 
+#' From basis function coefficients, produce a matrix of
 #' pixel values.
-#' 
+#'
 #' @param basisCoefficients data frame of basis function
 #' coefficients, such as those produced by
 #' \code{fitBasis()}
