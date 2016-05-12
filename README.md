@@ -6,8 +6,6 @@ This package contains utilities to read, center and plot cartridge images. It im
 
 Images must be in the standard format as released by the National Institute of Standards and Technology (NIST). Such data are available from the [NIST Ballistics Toolmark Research Database](http://www.nist.gov/forensics/ballisticsdb/), and in particular we are developing methods for images of breech face impressions using 2D ring light. An example image from the database is below.
 
-    #> Loading cartridges
-
 ![](README-unnamed-chunk-2-1.png)
 
 Description of method

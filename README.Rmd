@@ -23,7 +23,7 @@ Images must be in the standard format as released by the National Institute of S
 
 ```{r,echo=FALSE,fig.width=4,fig.height=3}
 library(devtools)
-devtools::load_all()
+devtools::load_all(quiet=TRUE)
 LL1_3 <- readCropTIFF(system.file("extdata", "LL1_3.tif", package = "cartridges"),crop=FALSE)
 par(mar=c(0,0,0,0))
 plot(c(1,2592), c(1,1944),type="n",xaxt="n",yaxt="n",xlab = "", ylab = "",yaxs="i",xaxs="i")
