@@ -85,7 +85,7 @@ Then load the package using
 library(cartridges)
 ```
 
-For full functionality you will need to install the `rgdal` package
+For the function `readCropTIFF()` (see below) to work, you will need to install either the `rgdal` package (recommended), or the `tiff` package. You can do so using `install.packages("rgdal")`. Linux users will first have to install the GDAL library using `sudo apt-get install libgdal-dev`. If you do not have root access, you can choose to use `tiff` instead.
 
 ## Functions available
 * `readCropTIFF()`: to read in a raw image and obtain a matrix of pixel values
@@ -103,7 +103,7 @@ These are for centering the image, and the methodology is described further in t
 * `gridSearch()`: searches a grid of possible locations for the center of the image
 * `surfacePlot()`: produces a surface plot for determining the best location of the center
 
-Help files for each of these can be accessed using `help(functionName)` or `?functionName`, e.g. `help(plotImage)`.
+Help files with examples for each of these functions can be accessed using `help(functionName)` or `?functionName`, e.g. `help(plotImage)`.
 
 ### Methods for centering images
 Before the basis functions are fitted, the image has to be properly centered. To determine an appropriate center, we first notice that images have a dark, symmetric outer ring. We fit the basis functions corresponding approximately to the radius of this ring, and if the image is properly centered, the fit obtained should be good.

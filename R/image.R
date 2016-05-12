@@ -18,14 +18,23 @@
 #' @export
 #'
 readCropTIFF<-function(TIFFfilename,crop=TRUE){
-    if (!requireNamespace("rgdal", quietly = TRUE)) {
-        stop("rgdal needed for this function to work. Please install it.",
-             call. = FALSE)
-    }
-    if (crop==TRUE) {
-        ret<-raster::as.matrix(raster::raster(TIFFfilename))[13:1931,337:2255]
+    if (requireNamespace("rgdal", quietly = TRUE)) {
+        if (crop==TRUE) {
+            ret<-raster::as.matrix(raster::raster(TIFFfilename))[13:1931,337:2255]
+        } else {
+            ret<-raster::as.matrix(raster::raster(TIFFfilename))
+        }
+    } else if (requireNamespace("tiff", quietly = TRUE)) {
+        if (crop==TRUE) {
+            ret<-tiff::readTIFF(TIFFfilename)[,,1]*255
+            storage.mode(ret)<-"integer"
+            ret<-ret[13:1931,337:2255]
+        } else {
+            ret<-tiff::readTIFF(TIFFfilename)[,,1]*255
+            storage.mode(ret)<-"integer"
+        }
     } else {
-        ret<-raster::as.matrix(raster::raster(TIFFfilename))
+        stop("Packages rgdal (recommended) or tiff needed for this function to work. Please install either.", call. = FALSE)
     }
     return(ret)
 }
