@@ -19,7 +19,9 @@ To construct such a signature, we make use of the circular symmetry of the image
 
 We represent these matrices as circularly symmetric basis functions, which take an ij coordinate as an input and return the value 0 or 1. An image can then be decomposed as follows:
 
-![](equation.png) ![](bulletPoints.png)
+![](equation.png)
+
+![](bulletPoints.png)
 
 The coefficient of each basis function is the mean of pixel values of pixels in that basis function, and these form the image signature. The number of basis functions required depend on the size of the image. Standard images in the NIST database are 2592 x 1944 pixels, and after cropping to square we have images that are 1919 x 1919 pixels. A total of 276,569 basis functions are required for such images.
 
