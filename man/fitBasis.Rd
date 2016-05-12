@@ -7,7 +7,7 @@
 fitBasis(image, basis)
 }
 \arguments{
-\item{image}{centered image}
+\item{image}{centered image. Image has to be square.}
 
 \item{basis}{list of basis functions of the appropriate
 dimension, such as those

@@ -21,7 +21,6 @@ that are not available are set to 0.
 Shift a 1919 x 1919 image
 }
 \examples{
-data(LL1_3)
 shifted <- shiftedImage(LL1_3, 910, 910)
 }
 

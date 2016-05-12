@@ -25,15 +25,7 @@ A circularly symmetric basis spans the space of circularly
 symmetric matrices. Each matrix in the basis takes the
 value 1 for pixels that are the same distance from the
 center, and zero otherwise. Basis are enumerated from
-center outwards.
-}
-\details{
-For a 3 x 3 matrix, there are a total of 3 basis. The
-first has 1 for the (2, 2) pixel and 0 otherwise. The
-second basis has 1's for coordinates (1, 2), (2, 1),
-(2, 3) and (3, 2), and 0 otherwise. The third has
-1's for coordinates (1, 1), (1, 3), (3, 1), (3, 3),
-and 0's otherwise. Functions that take an ij coordinate
+center outwards. Functions that take an ij coordinate
 as an input and return the value 0 or 1 are termed
 circularly symmetric basis functions.
 }

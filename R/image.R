@@ -37,7 +37,6 @@ readCropTIFF<-function(TIFFfilename,crop=TRUE){
 #' that are not available are set to 0.
 #'
 #' @examples
-#' data(LL1_3)
 #' shifted <- shiftedImage(LL1_3, 910, 910)
 #' @export
 #'
@@ -63,14 +62,17 @@ shiftedImage<-function(image,centeri,centerj){
 
 #' Get fitted image from basis function coefficients
 #'
-#' @param image centered image
+#' From basis function coefficients, produce a matrix of 
+#' pixel values.
+#' 
 #' @param basisCoefficients data frame of basis function
 #' coefficients, such as those produced by
 #' \code{fitBasis()}
-#' @param basis list of basis functions of the appropriate
-#' dimension, such as those
-#' produced by \code{getBasisFunctions()}.
-#' @param dimension dimension of image
+#' @param basis list of basis functions of the same length
+#' as the number of rows in \code{basisCoefficients}. Can
+#' be produced by \code{getBasisFunctions()}.
+#' @param dimension dimension of output image. This has to
+#' match the number of basis functions in \code{basis}.
 #'
 #' @return A matrix of pixel values
 #' @examples
@@ -88,9 +90,9 @@ getFittedImage<-function(basisCoefficients,basis,dimension){
 }
 
 
-#' Plot an image
+#' Plot a square image
 #'
-#' @param image image to be plotted
+#' @param image image to be plotted. Image has to be square.
 #' @param type either \code{"original"} for images on the
 #' original scale (pixel values 0-255), or \code{"residuals"}
 #' for residual pixel values (-255 to 255).

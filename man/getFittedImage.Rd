@@ -11,19 +11,19 @@ getFittedImage(basisCoefficients, basis, dimension)
 coefficients, such as those produced by
 \code{fitBasis()}}
 
-\item{basis}{list of basis functions of the appropriate
-dimension, such as those
-produced by \code{getBasisFunctions()}.}
+\item{basis}{list of basis functions of the same length
+as the number of rows in \code{basisCoefficients}. Can
+be produced by \code{getBasisFunctions()}.}
 
-\item{dimension}{dimension of image}
-
-\item{image}{centered image}
+\item{dimension}{dimension of output image. This has to
+match the number of basis functions in \code{basis}.}
 }
 \value{
 A matrix of pixel values
 }
 \description{
-Get fitted image from basis function coefficients
+From basis function coefficients, produce a matrix of 
+pixel values.
 }
 \examples{
 LL1_3_basis <- fitBasis(LL1_3,basis1919)

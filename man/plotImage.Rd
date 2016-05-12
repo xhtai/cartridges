@@ -2,12 +2,12 @@
 % Please edit documentation in R/image.R
 \name{plotImage}
 \alias{plotImage}
-\title{Plot an image}
+\title{Plot a square image}
 \usage{
 plotImage(image, type, grayscale, main)
 }
 \arguments{
-\item{image}{image to be plotted}
+\item{image}{image to be plotted. Image has to be square.}
 
 \item{type}{either \code{"original"} for images on the
 original scale (pixel values 0-255), or \code{"residuals"}
@@ -19,7 +19,7 @@ the grayscale is to be plotted.}
 \item{main}{title for plots with grayscale}
 }
 \description{
-Plot an image
+Plot a square image
 }
 \examples{
 plotImage(LL1_3,"original",grayscale=FALSE)
