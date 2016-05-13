@@ -37,7 +37,7 @@ library(devtools)
 devtools::install_github("xhtai/cartridges")
 ```
 
-`devtools` has a number of dependencies (e.g. `libssl-dev`, `libcurl4-gnutls-dev`). If you are unable to install these, a [tarball](https://github.com/xhtai/cartridges/cartridges_0.0.0.9000.tar.gz) is provided, and you can download and install this using `R CMD INSTALL [-l lib] cartridges_0.0.0.9000.tar.gz`. Before doing this, you will also need to install the following two R packages: `raster` and `fields`, which you can do using `install.packages()`.
+`devtools` has a number of dependencies (e.g. `libssl-dev`, `libcurl4-gnutls-dev`). If you are unable to install these, a [tarball](https://github.com/xhtai/cartridges/blob/master/cartridges_0.0.0.9000.tar.gz) is provided, and you can download and install this using `R CMD INSTALL [-l lib] cartridges_0.0.0.9000.tar.gz`. Before doing this, you will also need to install the following two R packages: `raster` and `fields`, which you can do using `install.packages()`.
 
 After installing the `cartridges` package, load it using
 
@@ -167,3 +167,13 @@ This is work in progress and there are many possible improvements to both the me
 -   Improve centering procedure
 -   Many code speed-ups are possible
 -   Error-checking for functions.
+
+Credits
+-------
+
+This is work with William F. Eddy. The NIST database is maintained by Xiaoyu Alan Zheng.
+
+License
+-------
+
+The `cartridges` package is licensed under GPLv3 (<http://www.gnu.org/licenses/gpl.html>).
