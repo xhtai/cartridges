@@ -73,19 +73,25 @@ The coefficient of each basis function is the mean of pixel values of pixels in 
 
 ## Installation
 
-If you do not have R installed, visit https://www.r-project.org/. You will also need to install the `devtools` package from CRAN using `install.packages("devtools")`.
+If you do not have R installed, visit https://www.r-project.org/. You will also need to install the `devtools` package from CRAN using `install.packages("devtools")`. 
 
 To install this package:
 ```{r, eval=FALSE}
 library(devtools)
 devtools::install_github("xhtai/cartridges")
 ```
-Then load the package using 
+
+`devtools` has a number of dependencies (e.g. `libssl-dev`, `libcurl4-gnutls-dev`). If you are unable to install these, a [tarball](https://github.com/xhtai/cartridges/cartridges_0.0.0.9000.tar.gz) is provided, and you can download and install this using `R CMD INSTALL [-l lib] cartridges_0.0.0.9000.tar.gz`. Before doing this, you will also need to install the following two R packages: `raster` and `fields`, which you can do using `install.packages()`.
+
+After installing the `cartridges` package, load it using 
 ```{r, eval=FALSE}
 library(cartridges)
 ```
 
-For the function `readCropTIFF()` (see below) to work, you will need to install either the `rgdal` package (recommended), or the `tiff` package. You can do so using `install.packages("rgdal")`. Linux users will first have to install the GDAL library using `sudo apt-get install libgdal-dev`. If you do not have root access, you can choose to use `tiff` instead.
+For the function `readCropTIFF()` (see below) to work, you will also need to install either the `rgdal` package (recommended), or the `tiff` package. You can do so using `install.packages("rgdal")` or `install.packages("tiff")`. 
+
+For `rgdal`, Linux users need to have the GDAL library installed. If you do not have it, use `sudo apt-get install libgdal-dev`. For `tiff`, you will need `libtiff4-dev`. If neither of these are available on your system and installing them is not an option, you might be out of luck. A sample data set is pre-loaded and you can access it by simply referring to `LL1_3`. All other functions should still be available.
+
 
 ## Functions available
 * `readCropTIFF()`: to read in a raw image and obtain a matrix of pixel values
@@ -194,4 +200,6 @@ This is work in progress and there are many possible improvements to both the me
 
 * Develop additional methods to model the residuals and capture the asymmetries
 * Reduce the dimension further by fitting a local smoother
-* Many code speed-ups are possible.
+* Improve centering procedure
+* Many code speed-ups are possible
+* Error-checking for functions.
