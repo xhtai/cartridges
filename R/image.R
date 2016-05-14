@@ -1,17 +1,16 @@
 #' Read in a 2592 x 1944 TIFF cartridge image
 #'
-#' Images from the NIST Ballistics and Research Toolmark
-#' Database are in this standard format, with dimensions
-#' 2592 x 1944, and on a 255-grayscale. Images are read
-#' in, returning a matrix with pixel values taking values
-#' 0-255. By default images are cropped to square (1919 x
-#' 1919 pixels) for further processing.
+#' Images from the NIST Ballistics and Research Toolmark Database are in this
+#' standard format, with dimensions 2592 x 1944, and on a 255-grayscale. Images
+#' are read in, returning a matrix with pixel values taking values 0-255. By
+#' default images are cropped to square (1919 x 1919 pixels) for further
+#' processing.
 #'
 #' @param TIFFfilename location of TIFF file to be read in
-#' @param crop a logical value indicating whether the image should
-#' be cropped to 1919 x 1919 pixels
-#' @return A 1919 x 1919 (cropped) or 2592 x 1944 matrix
-#' containing pixel values from 0 to 255.
+#' @param crop a logical value indicating whether the image should be cropped to
+#'   1919 x 1919 pixels
+#' @return A 1919 x 1919 (cropped) or 2592 x 1944 matrix containing pixel values
+#'   from 0 to 255.
 #' @examples
 #' LL1_3 <- readCropTIFF(system.file("extdata", "LL1_3.tif",
 #'  package="cartridges"))
@@ -46,8 +45,8 @@ readCropTIFF<-function(TIFFfilename,crop=TRUE){
 #' @param centeri i-coordinate of desired center
 #' @param centerj j-coordinate of desired center
 #'
-#' @return A shifted 1919 x 1919 image. Pixel values
-#' that are not available are set to 0.
+#' @return A shifted 1919 x 1919 image. Pixel values that are not available are
+#'   set to 0.
 #'
 #' @examples
 #' shifted <- shiftedImage(LL1_3, 910, 910)
@@ -75,17 +74,14 @@ shiftedImage<-function(image,centeri,centerj){
 
 #' Get fitted image from basis function coefficients
 #'
-#' From basis function coefficients, produce a matrix of
-#' pixel values.
+#' From basis function coefficients, produce a matrix of pixel values.
 #'
-#' @param basisCoefficients data frame of basis function
-#' coefficients, such as those produced by
-#' \code{fitBasis()}
-#' @param basis list of basis functions of the same length
-#' as the number of rows in \code{basisCoefficients}. Can
-#' be produced by \code{getBasisFunctions()}.
-#' @param dimension dimension of output image. This has to
-#' match the number of basis functions in \code{basis}.
+#' @param basisCoefficients data frame of basis function coefficients, such as
+#'   those produced by \code{fitBasis()}
+#' @param basis list of basis functions of the same length as the number of rows
+#'   in \code{basisCoefficients}. Can be produced by \code{getBasisFunctions()}.
+#' @param dimension dimension of output image. This has to match the number of
+#'   basis functions in \code{basis}.
 #'
 #' @return A matrix of pixel values
 #' @examples
@@ -106,11 +102,11 @@ getFittedImage<-function(basisCoefficients,basis,dimension){
 #' Plot a square image
 #'
 #' @param image image to be plotted. Image has to be square.
-#' @param type either \code{"original"} for images on the
-#' original scale (pixel values 0-255), or \code{"residuals"}
-#' for residual pixel values (-255 to 255).
-#' @param grayscale logical value indicating whether or not
-#' the grayscale is to be plotted.
+#' @param type either \code{"original"} for images on the original scale (pixel
+#'   values 0-255), or \code{"residuals"} for residual pixel values (-255 to
+#'   255).
+#' @param grayscale logical value indicating whether or not the grayscale is to
+#'   be plotted.
 #' @param main title for plots with grayscale
 #'
 #' @examples

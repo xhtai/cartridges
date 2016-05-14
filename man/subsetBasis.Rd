@@ -7,25 +7,22 @@
 subsetBasis(originalBasis, distFromCenter, numPixels)
 }
 \arguments{
-\item{originalBasis}{list object produced by
-\code{getBasisFunctions()}}
+\item{originalBasis}{list object produced by \code{getBasisFunctions()}}
 
-\item{distFromCenter}{vector of length 2 indicating
-the minimum and maximum distances from the center}
+\item{distFromCenter}{vector of length 2 indicating the minimum and maximum
+distances from the center}
 
-\item{numPixels}{integer value indicating the required
-number of pixels in each basis function}
+\item{numPixels}{integer value indicating the required number of pixels in
+each basis function}
 }
 \value{
-A subset of the original basis with basis
-functions of the required distances from the center
-and number of pixels.
+A subset of the original basis with basis functions of the required
+  distances from the center and number of pixels.
 }
 \description{
-Get a subset of basis functions produced by
-\code{getBasisFunctions()}, subsetting based
-on distance from center and the number of pixels
-in each basis function.
+Get a subset of basis functions produced by \code{getBasisFunctions()},
+subsetting based on distance from center and the number of pixels in each
+basis function.
 }
 \examples{
 basis3 <- getBasisFunctions(3)

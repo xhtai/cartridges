@@ -14,8 +14,8 @@ shiftedImage(image, centeri, centerj)
 \item{centerj}{j-coordinate of desired center}
 }
 \value{
-A shifted 1919 x 1919 image. Pixel values
-that are not available are set to 0.
+A shifted 1919 x 1919 image. Pixel values that are not available are
+  set to 0.
 }
 \description{
 Shift a 1919 x 1919 image

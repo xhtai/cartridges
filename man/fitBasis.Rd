@@ -9,14 +9,12 @@ fitBasis(image, basis)
 \arguments{
 \item{image}{centered image. Image has to be square.}
 
-\item{basis}{list of basis functions of the appropriate
-dimension, such as those
-produced by \code{getBasisFunctions()}.}
+\item{basis}{list of basis functions of the appropriate dimension, such as
+those produced by \code{getBasisFunctions()}.}
 }
 \value{
-A data frame with the number of pixels in
-each basis function, basis function coefficient and
-residual sum of squares for each basis function.
+A data frame with the number of pixels in each basis function, basis
+  function coefficient and residual sum of squares for each basis function.
 }
 \description{
 Fit basis functions to a centered image.

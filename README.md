@@ -2,7 +2,7 @@
 cartridges
 ==========
 
-This package contains utilities to read, center and plot cartridge images. It implements a method of creating a signature from such images. This is work in progress.
+This package contains utilities to read, center and plot cartridge images. It implements a method of creating a signature from such images. This is work in progress. Check back for updates in the coming months.
 
 Images must be in the standard format as released by the National Institute of Standards and Technology (NIST). Such data are available from the [NIST Ballistics Toolmark Research Database](http://www.nist.gov/forensics/ballisticsdb/), and in particular we are developing methods for images of breech face impressions using 2D ring light. An example image from the database is below.
 
@@ -11,7 +11,7 @@ Images must be in the standard format as released by the National Institute of S
 Description of method
 ---------------------
 
-The goal is to compute a "signature" from a high-resolution cartridge case image. Such a signature would enable the rapid matching of new images to a database of existing images.
+The goal is to compute a "signature" from a high-resolution cartridge case image. A signature is a low-dimensional representation that would enable the rapid matching of new images to a database of existing images.
 
 To construct such a signature, we make use of the circular symmetry of the image. We assume that pixels located the same distance from the center of the image take the same value. We can then decompose each image into a linear combination of circularly symmetric basis. The first few matrices in the basis are given in the figure below, where each figure in the panel represents one matrix. Each matrix takes the value 1 for pixels that are the same distance from the center, and zero otherwise. Basis are enumerated from center outwards.
 
@@ -19,9 +19,9 @@ To construct such a signature, we make use of the circular symmetry of the image
 
 We represent these matrices as circularly symmetric basis functions, which take an ij coordinate as an input and return the value 0 or 1. An image can then be decomposed as follows:
 
-![](equation.png)
+![](README-equation.png)
 
-![](bulletPoints.png)
+![](README-bulletPoints.png)
 
 The coefficient of each basis function is the mean of pixel values of pixels in that basis function, and these form the image signature. The number of basis functions required depend on the size of the image. Standard images in the NIST database are 2592 x 1944 pixels, and after cropping to square we have images that are 1919 x 1919 pixels. A total of 276,569 basis functions are required for such images.
 
@@ -37,8 +37,6 @@ library(devtools)
 devtools::install_github("xhtai/cartridges")
 ```
 
-`devtools` has a number of dependencies (e.g. `libssl-dev`, `libcurl4-gnutls-dev`). If you are unable to install these, a [tarball](https://github.com/xhtai/cartridges/blob/master/cartridges_0.0.0.9000.tar.gz) is provided, and you can download and install this using `R CMD INSTALL [-l lib] cartridges_0.0.0.9000.tar.gz`. Before doing this, you will also need to install the following two R packages: `raster` and `fields`, which you can do using `install.packages()`.
-
 After installing the `cartridges` package, load it using
 
 ``` r
@@ -47,7 +45,22 @@ library(cartridges)
 
 For the function `readCropTIFF()` (see below) to work, you will also need to install either the `rgdal` package (recommended), or the `tiff` package. You can do so using `install.packages("rgdal")` or `install.packages("tiff")`.
 
-For `rgdal`, Linux users need to have the GDAL library installed. If you do not have it, use `sudo apt-get install libgdal-dev`. For `tiff`, you will need `libtiff4-dev`. If neither of these are available on your system and installing them is not an option, you might be out of luck. A sample data set is pre-loaded and you can access it by simply referring to `LL1_3`. All other functions should still be available.
+#### Difficulties using devtools
+
+If you are using a Linux machine, you might have some difficulties as `devtools` has a number of dependencies (e.g. `libssl-dev`, `libcurl4-gnutls-dev`). If you are unable to install these, you can download the [tarball](https://github.com/xhtai/cartridges/tarball/master) directly and install using `install.packages(file.choose(), repos=NULL)` or `R CMD INSTALL`. Before doing this, you will also need to install the following two R packages manually: `raster` and `fields`. You can do this using `install.packages()`.
+
+``` r
+install.packages(c("raster", "fields"))
+install.packages(file.choose(), repos = NULL)
+```
+
+A window will pop-up and all you have to do is select the location of the .tar.gz file.
+
+If you are using a Windows machine You can do the same using a [.zip file](https://github.com/xhtai/cartridges/zipball/master).
+
+#### Difficulties with rgdal or tiff
+
+For `rgdal`, Linux users need to have the GDAL library installed. If you do not have it, use `sudo apt-get install libgdal-dev`. For `tiff`, you will need `libtiff4-dev`. If neither of these are available on your system and installing them is not an option, you might be out of luck. You may want to explore other tools for reading in TIFF files. A sample data set is pre-loaded and you can access it by simply referring to `LL1_3`. All other functions will still be available.
 
 Functions available
 -------------------
@@ -75,7 +88,7 @@ Before the basis functions are fitted, the image has to be properly centered. To
 
 We use basis functions with radius 450-1000 pixels, and compute the residual sum of squares of the fit. A better fit would produce a smaller residual sum of squares. We search over a grid of possible values, and the location resulting in the smallest residual sum of squares is the best center location. This is visualized using `surfacePlot()`.
 
-As the grid search is a slow process, we can choose to use `roughCenter()` to first determine an appropriate starting location. Briefly, the steps are as follows:
+As the grid search is a slow process, we can choose to use `roughCenter()` to first determine an appropriate starting location. This function is designed for speed and the center produced should not be used without first running `gridSearch()`. Briefly, the steps are as follows:
 
 -   convert the images from 256-grayscale to binary values, with values from 0 to 127 taking the value 0 and those from 128 to 255 taking the value 1
 -   along an input row, consider 201 possible center locations from columns 860 to 1060
@@ -84,7 +97,7 @@ As the grid search is a slow process, we can choose to use `roughCenter()` to fi
 -   along the best column, consider 201 possible rows (100 above and 100 below the input row)
 -   choose the center resulting in the longest string of continuous zeros.
 
-We recommend repeating this for rows 940 and 980. To speed up the process further, we can use only basis functions with 8 pixels, as these are the most common.
+We recommend repeating this for rows 940 and 980. To speed up the process further, we can choose to use only basis functions with 8 pixels, as these are the most common.
 
 Example
 -------
@@ -103,7 +116,9 @@ We can plot this image:
 plotImage(LL1_3, "original", grayscale = TRUE, main = "Cartridge Image from Laura Lightstone Study")
 ```
 
-Next we obtain the basis functions for an image of size 1919 x 1919 pixels. (Note that this might take up to half an hour. If you do not want to wait, the data produced is pre-loaded with this package and you can access it by just referring to `basis1919`, e.g. `length(basis1919)`.)
+![](README-originalImage.png)
+
+Next we obtain the basis functions for an image of size 1919 x 1919 pixels. (Note that this might take up to half an hour, depending on your system. If you do not want to wait, the data produced is pre-loaded with this package and you can access it by just referring to `basis1919`, e.g. `length(basis1919)`.)
 
 ``` r
 basis1919 <- getBasisFunctions(1919)
@@ -123,12 +138,14 @@ out <- roughCenter(LL1_3, basis1919_8pixels_rad450_1000, 980)
 best <- out[which.max(out$maxRun), ]
 ```
 
-We then do a grid search for the smallest residual sum of squares, producing a surface plot for visualization. This could take up to an hour, and should produce the coordinates (970, 962) as the best center.
+We then do a grid search for the smallest residual sum of squares, producing a surface plot for visualization. This could take up to an hour or more, and should produce the coordinates (970, 962) as the best center.
 
 ``` r
 RSSdtf <- gridSearch(LL1_3, basis1919_rad450_1000, best$i, best$j, plot = TRUE)
 best <- RSSdtf[which.min(RSSdtf$totalRSS), ]
 ```
+
+![](README-LL1_3_RSSplot.png)
 
 With the center (970, 962), we shift the image as follows.
 
@@ -136,7 +153,7 @@ With the center (970, 962), we shift the image as follows.
 shifted <- shiftedImage(LL1_3, best$centeri, best$centerj)
 ```
 
-We can then fit the basis functions using `LL1_3_basis<-fitBasis(shifted,basis1919)`, but a better alternative would be to first crop the image. This is because with the shifting process, we introduced a black border by setting pixels that were not available to 0. Cropping the image would remove this border.
+We can then fit the basis functions using `LL1_3_basis <- fitBasis(shifted, basis1919)`, but a better alternative would be to first crop the image. This is because with the shifting process, we introduced a black border by setting pixels that were not available to 0. Cropping the image would remove this border.
 
 ``` r
 shifted <- shifted[76:1844, 76:1844]
@@ -150,12 +167,16 @@ fittedImage <- getFittedImage(LL1_3_basis, basis1769, 1769)
 plotImage(fittedImage, "original", grayscale = TRUE, main = "Fitted Image")
 ```
 
+![](README-fittedImage.png)
+
 We can also obtain and plot the residuals.
 
 ``` r
 residualImage <- shifted - fittedImage
 plotImage(residualImage, "residuals", grayscale = TRUE, main = "Residual Image")
 ```
+
+![](README-residualImage.png)
 
 Further work
 ------------

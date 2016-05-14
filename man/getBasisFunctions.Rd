@@ -7,27 +7,23 @@
 getBasisFunctions(dimension)
 }
 \arguments{
-\item{dimension}{size of image (\code{dimension} x
-\code{dimension}), where \code{dimension} is odd}
+\item{dimension}{size of image (\code{dimension} x \code{dimension}), where
+\code{dimension} is odd}
 }
 \value{
-A list with length = number of basis functions
-for an image of size \code{dimension} x \code{dimension}.
-Each list item is a matrix whose rows are the ij
-coordinates of pixels in each basis function, and i2j2
-is the distance from the center of the pixels in each
-basis.
+A list with length = number of basis functions for an image of size
+  \code{dimension} x \code{dimension}. Each list item is a matrix whose rows
+  are the ij coordinates of pixels in each basis function, and i2j2 is the
+  square of the distance from the center of the pixels in each basis.
 }
 \description{
-A circularly symmetric image has the same pixel values
-for pixels that are the same distance from the center.
-A circularly symmetric basis spans the space of circularly
-symmetric matrices. Each matrix in the basis takes the
-value 1 for pixels that are the same distance from the
-center, and zero otherwise. Basis are enumerated from
-center outwards. Functions that take an ij coordinate
-as an input and return the value 0 or 1 are termed
-circularly symmetric basis functions.
+A circularly symmetric image has the same pixel values for pixels that are
+the same distance from the center. A circularly symmetric basis spans the
+space of circularly symmetric matrices. Each matrix in the basis takes the
+value 1 for pixels that are the same distance from the center, and zero
+otherwise. Basis are enumerated from center outwards. Functions that take an
+ij coordinate as an input and return the value 0 or 1 are termed circularly
+symmetric basis functions.
 }
 \examples{
 basis3 <- getBasisFunctions(3)

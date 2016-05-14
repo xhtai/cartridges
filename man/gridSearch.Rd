@@ -7,36 +7,33 @@
 gridSearch(image, basis, startingRow, startingColumn, plot)
 }
 \arguments{
-\item{image}{image that center is to be
-determined for}
+\item{image}{image that center is to be determined for}
 
-\item{basis}{subset of basis functions of the
-appropriate dimension (1919 x 1919), corresponding
-approximately to the outer ring. Recommended
-distances from center are 450-1000 pixels.}
+\item{basis}{subset of basis functions of the appropriate dimension (1919 x
+1919), corresponding approximately to the outer ring. Recommended distances
+from center are 450-1000 pixels.}
 
 \item{startingRow}{starting row to be searched}
 
 \item{startingColumn}{starting column to be searched}
 
-\item{plot}{logical value indicating whether a surface
-plot of total RSS values is desired}
+\item{plot}{logical value indicating whether a surface plot of total RSS
+values is desired}
 }
 \value{
-A data frame with the ij coordinates of the
-center considered, and the total residual sum of
-squares of the fit.
+A data frame with the ij coordinates of the center considered, and
+  the total residual sum of squares of the fit.
 }
 \description{
-At a grid of potential centers, fit basis functions
-corresponding to the ring
-(approximately 450-1000 pixels from the center)
-to the image, and calculate the total residual sum of
-squares of the fit. Small values indicate a better
+At a grid of potential centers, fit basis functions corresponding to the ring
+(approximately 450-1000 pixels from the center) to the image, and calculate
+the total residual sum of squares of the fit. Small values indicate a better
 fit and a more appropriate center.
 }
 \examples{
+\dontrun{
 basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
 RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962,plot=TRUE)
+}
 }
 

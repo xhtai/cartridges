@@ -9,20 +9,19 @@ readCropTIFF(TIFFfilename, crop = TRUE)
 \arguments{
 \item{TIFFfilename}{location of TIFF file to be read in}
 
-\item{crop}{a logical value indicating whether the image should
-be cropped to 1919 x 1919 pixels}
+\item{crop}{a logical value indicating whether the image should be cropped to
+1919 x 1919 pixels}
 }
 \value{
-A 1919 x 1919 (cropped) or 2592 x 1944 matrix
-containing pixel values from 0 to 255.
+A 1919 x 1919 (cropped) or 2592 x 1944 matrix containing pixel values
+  from 0 to 255.
 }
 \description{
-Images from the NIST Ballistics and Research Toolmark
-Database are in this standard format, with dimensions
-2592 x 1944, and on a 255-grayscale. Images are read
-in, returning a matrix with pixel values taking values
-0-255. By default images are cropped to square (1919 x
-1919 pixels) for further processing.
+Images from the NIST Ballistics and Research Toolmark Database are in this
+standard format, with dimensions 2592 x 1944, and on a 255-grayscale. Images
+are read in, returning a matrix with pixel values taking values 0-255. By
+default images are cropped to square (1919 x 1919 pixels) for further
+processing.
 }
 \examples{
 LL1_3 <- readCropTIFF(system.file("extdata", "LL1_3.tif",

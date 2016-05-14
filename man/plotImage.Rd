@@ -9,12 +9,12 @@ plotImage(image, type, grayscale, main)
 \arguments{
 \item{image}{image to be plotted. Image has to be square.}
 
-\item{type}{either \code{"original"} for images on the
-original scale (pixel values 0-255), or \code{"residuals"}
-for residual pixel values (-255 to 255).}
+\item{type}{either \code{"original"} for images on the original scale (pixel
+values 0-255), or \code{"residuals"} for residual pixel values (-255 to
+255).}
 
-\item{grayscale}{logical value indicating whether or not
-the grayscale is to be plotted.}
+\item{grayscale}{logical value indicating whether or not the grayscale is to
+be plotted.}
 
 \item{main}{title for plots with grayscale}
 }
