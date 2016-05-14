@@ -23,7 +23,7 @@ We represent these matrices as circularly symmetric basis functions, which take 
 
 ![](README-bulletPoints.png)
 
-The coefficient of each basis function is the mean of pixel values of pixels in that basis function, and these form the image signature. The number of basis functions required depend on the size of the image. Standard images in the NIST database are 2592 x 1944 pixels, and after cropping to square we have images that are 1919 x 1919 pixels. A total of 276,569 basis functions are required for such images.
+The coefficient of each basis function is the mean of pixel values of pixels in that basis function, and these (or some function of these - further work is still being done) will form the image signature. The number of basis functions required depend on the size of the image. Standard images in the NIST database are 2592 x 1944 pixels, and after cropping to square we have images that are 1919 x 1919 pixels. A total of 276,569 basis functions are required for such images.
 
 Installation
 ------------
@@ -56,7 +56,7 @@ install.packages(file.choose(), repos = NULL)
 
 A window will pop-up and all you have to do is select the location of the .tar.gz file.
 
-If you are using a Windows machine You can do the same using a [.zip file](https://github.com/xhtai/cartridges/zipball/master).
+If you are using a Windows machine, you can do the same using a [.zip file](https://github.com/xhtai/cartridges/zipball/master).
 
 #### Difficulties with rgdal or tiff
 

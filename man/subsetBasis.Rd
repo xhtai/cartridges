@@ -12,11 +12,11 @@ subsetBasis(originalBasis, distFromCenter, numPixels)
 \item{distFromCenter}{vector of length 2 indicating the minimum and maximum
 distances from the center}
 
-\item{numPixels}{integer value indicating the required number of pixels in
+\item{numPixels}{integer value indicating the desired number of pixels in
 each basis function}
 }
 \value{
-A subset of the original basis with basis functions of the required
+A subset of the original basis with basis functions of the desired
   distances from the center and number of pixels.
 }
 \description{

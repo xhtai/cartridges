@@ -30,12 +30,15 @@
 #' @param startingRow row to be searched
 #'
 #' @return A data frame with 402 rows, each row with the coordinates of the
-#'   center considered, and the maximum number of continuous zeros.
+#'   center considered, and the maximum number of continuous zeros in the sum of
+#'   binary pixels for each basis function.
 #'
 #' @examples
 #' \dontrun{
 #' basis1919_8pixels_rad450_1000 <- subsetBasis(basis1919,c(450,1000),8)
-#' center <- roughCenter(LL1_3, basis1919_8pixels_rad450_1000, 940)
+#' center <- roughCenter(LL1_3, basis1919_8pixels_rad450_1000, 940) # warning:
+#' this is a long computation (may take half an hour or more, depending on your
+#' system)
 #' }
 #' @export
 #'
@@ -102,7 +105,9 @@ roughCenter<-function(image,basis,startingRow){
 #' @examples
 #' \dontrun{
 #' basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
-#' RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962,plot=TRUE)
+#' RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962,plot=TRUE) # warning:
+#' this is a long computation and may take an hour or more, depending on your
+#' system
 #' }
 #' @export
 
@@ -152,7 +157,8 @@ gridSearch<-function(image,basis,startingRow,startingColumn,plot){
 #' @examples
 #' \dontrun{
 #' basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
-#' RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962)
+#' RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962) # warning: this is
+#' a long computation and may take an hour or more, depending on your system
 #' surfacePlot(RSSdtf,main="Total RSS of Basis Functions \n
 #'              with Radius of 450-1000 Pixels")
 #' }

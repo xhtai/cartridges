@@ -44,9 +44,9 @@ getBasisFunctions<-function(dimension){
 #' @param originalBasis list object produced by \code{getBasisFunctions()}
 #' @param distFromCenter vector of length 2 indicating the minimum and maximum
 #'   distances from the center
-#' @param numPixels integer value indicating the required number of pixels in
+#' @param numPixels integer value indicating the desired number of pixels in
 #'   each basis function
-#' @return A subset of the original basis with basis functions of the required
+#' @return A subset of the original basis with basis functions of the desired
 #'   distances from the center and number of pixels.
 #' @examples
 #' basis3 <- getBasisFunctions(3)

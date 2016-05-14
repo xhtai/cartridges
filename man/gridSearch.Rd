@@ -33,7 +33,9 @@ fit and a more appropriate center.
 \examples{
 \dontrun{
 basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
-RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962,plot=TRUE)
+RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962,plot=TRUE) # warning:
+this is a long computation and may take an hour or more, depending on your
+system
 }
 }
 

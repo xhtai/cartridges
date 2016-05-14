@@ -19,7 +19,8 @@ centers tested
 \examples{
 \dontrun{
 basis1919_rad450_1000<-subsetBasis(basis1919,c(450,1000))
-RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962)
+RSSdtf<-gridSearch(LL1_3,basis1919_rad450_1000,970,962) # warning: this is
+a long computation and may take an hour or more, depending on your system
 surfacePlot(RSSdtf,main="Total RSS of Basis Functions \\n
              with Radius of 450-1000 Pixels")
 }
