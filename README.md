@@ -2,20 +2,40 @@
 cartridges
 ==========
 
-This package contains utilities to read, center and plot cartridge images. It implements a method of creating a signature from such images. This is work in progress. Check back for updates in the coming months.
+This package contains utilities to read and plot cartridge case images. It pre-processes these images and implements an algorithm to compare the images. It produces a similarity score for each pairwise comparison and computes the probability of obtaining a higher score by chance. This is work in progress.
 
-Images must be in the standard format as released by the National Institute of Standards and Technology (NIST). Such data are available from the [NIST Ballistics Toolmark Research Database](http://www.nist.gov/forensics/ballisticsdb/), and in particular we are developing methods for images of breech face impressions using 2D ring light. An example image from the database is below.
+Images must be in the standard format as released by the National Institute of Standards and Technology (NIST). Such data are available from the [NIST Ballistics Toolmark Research Database](https://tsapps.nist.gov/NRBTD), and in particular we are developing methods for images of breech face impressions using 2D ring light. This methodology has been tested on images from the NBIDE study in the database. An example image from the database is below.
 
 ![](README-unnamed-chunk-2-1.png)
+
+Background
+----------
+
+When a gun is fired, it leaves marks on the bottom surface of the cartridge, and these marks are thought to be unique to the gun, in other words each gun is thought to produce unique marks. Here the marks that we are interested in are the breechface marks, which are marked out in the image below. These marks are caused by the bottom surface of the cartridge pressing against the breech block of the gun during the firing process.
+
+![](README-BF.png)
+
+Since the marks are thought to be unique, when cartridge cases are collected from crime scenes, they can be compared to cartridge cases that have been collected previously, to see if they come from the same gun as something that has been seen before. Because of the large number of cartridge cases being collected, rather than comparing these physical cartridge cases, we are interested in using automated algorithms to compare these images of the bottom surface of the cartridge cases.
+
+Given a new image and a database of images, this package implements tools to assess how similar the new image is to the images in the database, producing a similarity metric. To quantify the uncertainty in this comparison procedure, and also attach more meaning to the similarity scores, we also propose a method of computing the probability of obtaining a larger score by chance.
 
 Description of method
 ---------------------
 
-The goal is to compute a "signature" from a high-resolution cartridge case image. A signature is a low-dimensional representation that would enable the rapid matching of new images to a database of existing images.
+These are the steps for one pairwise comparison. There are 4 pre-processing steps before we compute the two measures that we are interested in.
+
+1.  Automatically select breechface marks
+2.  Level image
+3.  Remove circular symmetry
+4.  Outlier removal and filtering
+5.  Maximize correlation by translations and rotations
+6.  Compute probability of obtaining a higher score by chance
+
+-------------------------------------- the rest of this document needs updating
 
 To construct such a signature, we make use of the circular symmetry of the image. We assume that pixels located the same distance from the center of the image take the same value. We can then decompose each image into a linear combination of circularly symmetric basis. The first few matrices in the basis are given in the figure below, where each figure in the panel represents one matrix. Each matrix takes the value 1 for pixels that are the same distance from the center, and zero otherwise. Basis are enumerated from center outwards.
 
-![](README-unnamed-chunk-3-1.png)
+![](README-basis.png)
 
 We represent these matrices as circularly symmetric basis functions, which take an ij coordinate as an input and return the value 0 or 1. An image can then be decomposed as follows:
 

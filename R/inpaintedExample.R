@@ -1,0 +1,25 @@
+#' Matrix of pixel values after the first three pre-processing steps and
+#' inpainting outliers
+#'
+#' "NBIDE R BF 118.png" after the first three pre-processing steps, and
+#' inpainting outliers. The following is the full set of code to obtain this
+#' matrix. \preformatted{
+#' # step 1
+#' primerExample <- findPrimer(system.file("extdata", "NBIDE R BF 118.png", package = "cartridges"))
+#' FPexample <- findFP(system.file("extdata", "NBIDE R BF 118.png", package = "cartridges"), primer = primerExample)
+#' # step 2
+#' centeredExample <- centerBFprimer(FPexample, primerExample)
+#' leveledExample <- levelBF(centeredExample$centeredBF)
+#' # step 3
+#' removedExample <- removeCircular(leveledExample)
+#' # step 4
+#' croppedExample <- cropBorders(removedExample, centeredExample$centeredPrimer)
+#' outlierNAexample <- outlierRejection(croppedExample)
+#' inpaintedExample <- inpaint_nans(outlierNAexample)
+#' }
+#' Areas that are not part of the breechface impression are set to 0.
+#'
+#' @format An image matrix sized just large enough to contain all the breechface
+#'   impression pixels. In this case the matrix is 1372 x 1354 pixels.
+#' @source \url{https://tsapps.nist.gov/NRBTD}
+"inpaintedExample"

@@ -1,0 +1,21 @@
+#' Matrix of pixel values of processed image from the NBIDE study.
+#'
+#' A matrix of pixel values after processing, from an example image taken from
+#' the NBIDE study, one of the data sets available in the NIST Ballistics
+#' Toolmark Research Database. This image is a 2D breechface ring light image,
+#' and the original filename in the NIST download is "NBIDE R BF 118.png". The
+#' cartridge being imaged is a test fire from a Ruger gun (gun 3 in the study),
+#' using PMC ammunition. This image was processed using the function
+#' \code{\link{allPreprocess}}. It can also be obtained by running each
+#' pre-processing step individually (e.g. see code in
+#' \code{help(inpaintedExample)}, and then run \preformatted{
+#' nonBF <- is.na(croppedExample);
+#' processedExample <- gaussianFilter(inpaintedExample, nonBF)}).
+#' Theoretically, possible values are -510 to 510, but in actual fact
+#' the values are much smaller in magnitude. Pixels that are not part of the
+#' breechface marks are set to 0.
+#'
+#' @format A matrix with dimensions 1372 x 1354. Each entry contains pixel
+#'   values after processing.
+#' @source \url{https://tsapps.nist.gov/NRBTD}
+"processedExample"

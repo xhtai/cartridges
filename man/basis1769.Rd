@@ -4,7 +4,7 @@
 \name{basis1769}
 \alias{basis1769}
 \title{List of basis functions for a 1769 x 1769 image.}
-\format{A list of length 276569. Each list item corresponds to one basis
+\format{A list of length 236463. Each list item corresponds to one basis
   function, and contains a data frame with the number of rows being the
   number of pixels in the basis function, and 3 columns:
 \describe{

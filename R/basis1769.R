@@ -4,7 +4,7 @@
 #' For more details see \url{https://github.com/xhtai/cartridges}. These data
 #' are produced by \code{\link{getBasisFunctions}}.
 #'
-#' @format A list of length 276569. Each list item corresponds to one basis
+#' @format A list of length 236463. Each list item corresponds to one basis
 #'   function, and contains a data frame with the number of rows being the
 #'   number of pixels in the basis function, and 3 columns:
 #' \describe{
