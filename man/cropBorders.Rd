@@ -7,9 +7,9 @@
 cropBorders(image, primer)
 }
 \arguments{
-\item{primer}{A 1769 x 1769 binary matrix denoting the primer region}
+\item{image}{1769 x 1769 matrix}
 
-\item{inputImage}{1769 x 1769 matrix}
+\item{primer}{A 1769 x 1769 binary matrix denoting the primer region}
 }
 \value{
 A matrix, smaller than 1769 x 1769, containing only the valid primer

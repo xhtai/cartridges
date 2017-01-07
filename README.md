@@ -43,7 +43,7 @@ To remove the firing pin impression, we use use a similar set of steps, but we s
 
 ![](README-FP1.png)
 
-Now we perform a second pass where we apply an edge detector again, to try to remove any remaining marks that we might have missed the first time. This is necessary for some images where the firing pin impression might not be as highly contrasted with the surrounding breechface impression. In this particular example a second pass is not actually required, since the entire firing pin impression has been removed. Instead, several small marks on the breechface were picked out and removed. This is an unintended consequence but one that we live with for now. It turns out that we still achieve good results in later comparisons, but this is an area for further improvement.
+Now we perform a second pass where we apply an edge detector again, to try to remove any remaining marks that we might have missed the first time. This is necessary for some images where the firing pin impression might not be as highly contrasted with the surrounding breechface impression. In this particular example a second pass is not actually required, since the entire firing pin impression has been removed. Instead, several small marks on the breechface were picked out and removed. This is an unintended consequence but one that we live with for now. It turns out that we still achieve good results for most images in later comparisons, but this is an area for further improvement (TODO: in particular, in the NBIDE data set, NBIDE009, NBIDE110, NBIDE128 have poorer performance due to this step).
 
 ![](README-FP2.png)
 
@@ -91,10 +91,9 @@ After pre-processing, step 5 involves computing a similarity metric. Again, this
 
 The similarity metric is the correlation between the two images, and this is known in the literature as the maximum cross-correlation function, or *C**C**F*<sub>*m**a**x*</sub>. We first compute the cross-correlation function for each rotation angle:
 
-$$
-CCF(I\_1, I\_2) = \\frac{\\sum\_{i, j} I\_1(i, j)I\_2(i + dy, j + dx)}{\\sqrt{\\sum\_{i, j} I\_1(i, j)^2} \\sqrt{\\sum\_{i, j} I\_2(i, j)^2}}
-$$
- where *I*<sub>1</sub> and *I*<sub>2</sub> are the two images, *i* indexes the rows and *j* indexes the columns, and *d**x* and *d**y* represent translations. The *C**C**F* returns a matrix of correlation values, where each entry corresponds to a particular translation, and we store the maximum correlation. Repeating for many rotation angles, we obtain *C**C**F*<sub>*m**a**x*</sub>. Since this is a correlation, it takes values between -1 and 1, and can be interpreted as the maximum correlation between two images after lining them up correctly.
+![](README-CCFequation.png)
+
+where *I*<sub>1</sub> and *I*<sub>2</sub> are the two images, *i* indexes the rows and *j* indexes the columns, and *d**x* and *d**y* represent translations. The *C**C**F* returns a matrix of correlation values, where each entry corresponds to a particular translation, and we store the maximum correlation. Repeating for many rotation angles, we obtain *C**C**F*<sub>*m**a**x*</sub>. Since this is a correlation, it takes values between -1 and 1, and can be interpreted as the maximum correlation between two images after lining them up correctly.
 
 We compare our example image against another image from the NBIDE study, which was obtained using the same gun. We obtain a similarity score of .37, with a rotation angle of −15<sup>∘</sup>, meaning that the second image is rotated 15<sup>∘</sup> counter-clockwise. Plotting the two images with the second correctly rotated, we notice that the breechface marks are now lined up nicely.
 
@@ -104,7 +103,7 @@ We compare our example image against another image from the NBIDE study, which w
 
 The last step is to convert each similarity score into a statement of probability. In particular we compute the probability of obtaining a higher score by chance. These probabilities attach meaning to the scores, and also serve as a measure of uncertainty for this procedure. Our proposed method is as follows.
 
-We assume that all *C**C**F*<sub>*m**a**x*</sub> values for non-matches are drawn from the same distribution, and given such a distribution, we compare each newly computed score against this distribution, and compute the right tail proportion. This value is the probability of observing a higher CCFmax by chance.
+We assume that all *C**C**F*<sub>*m**a**x*</sub> values for non-matches are drawn from the same distribution, and given such a distribution, we compare each newly computed score against this distribution, and compute the right tail proportion. This value is the probability of observing a higher *C**C**F*<sub>*m**a**x*</sub> by chance.
 
 In reality, we do not have access to such a distribution. What we might have is a known database, where we are able to compute all pairwise non-matching scores. These form a sample from the unknown distribution. For example, using the NBIDE data set, we have a total of 108 images from 12 different guns. Doing all pairwise comparisons within the database, we have a total of 10692 non-match scores, which would form a sample from the unknown population of non-match scores. We can then compare .37 against this distribution.
 
@@ -229,7 +228,7 @@ Further work
 
 There are possible improvements to both the methodology and the code. Some of these are:
 
--   The second pass for removing the firing pin impression results in some valid areas being removed
+-   The second pass for removing the firing pin impression results in some valid areas being removed. In particular in the NBIDE data set, performance on images 9, 110 and 128 can be improved.
 -   Code speed-ups are possible, especially for steps 4 and 5, which were optimized for MATLAB
 -   Test on more data.
 

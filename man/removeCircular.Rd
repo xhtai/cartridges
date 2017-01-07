@@ -21,7 +21,7 @@ residuals again means that possible values are -510 to 510.
 \examples{
 \dontrun{
 # first run this:
-centeredExample <- center(FPexample, primerExample)
+centeredExample <- centerBFprimer(FPexample, primerExample)
 leveledExample <- levelBF(centeredExample$centeredBF)
 # then
 removedExample <- removeCircular(leveledExample)

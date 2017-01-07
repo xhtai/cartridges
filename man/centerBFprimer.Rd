@@ -27,7 +27,7 @@ primer is located at (884, 884).
 }
 \examples{
 \dontrun{
-centeredExample <- center(FPexample, primerExample)
+centeredExample <- centerBFprimer(FPexample, primerExample)
 }
 
 }

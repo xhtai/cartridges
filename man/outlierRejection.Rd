@@ -7,7 +7,7 @@
 outlierRejection(input)
 }
 \arguments{
-\item{inputImage}{image matrix}
+\item{input}{image matrix}
 }
 \value{
 A matrix with non-breechface areas set to 0, and outliers set to NA.

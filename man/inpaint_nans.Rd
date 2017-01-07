@@ -7,14 +7,14 @@
 inpaint_nans(A)
 }
 \arguments{
-\item{inputImage}{image matrix}
+\item{A}{image matrix}
 }
 \value{
 A matrix with NA values filled in.
 }
 \description{
 This was translated from John D'Errico's MATLAB code:
-\link{https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans},
+\url{https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans},
 Copyright (c) 2009, John D'Errico.
 }
 \examples{

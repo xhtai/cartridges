@@ -8,7 +8,7 @@
 #' Given an image with NA values in the borders, crops out these borders to
 #' leave the smallest rectangular region containing valid data.
 #'
-#' @param inputImage 1769 x 1769 matrix
+#' @param image 1769 x 1769 matrix
 #' @param primer A 1769 x 1769 binary matrix denoting the primer region
 #'
 #' @return A matrix, smaller than 1769 x 1769, containing only the valid primer
@@ -37,7 +37,7 @@ cropBorders <- function(image, primer) {
 #' the pixel values in its local patch. This is translated from code by Joseph
 #' Roth and Zach Richardson.
 #'
-#' @param inputImage image matrix
+#' @param input image matrix
 #'
 #' @return A matrix with non-breechface areas set to 0, and outliers set to NA.
 #'
@@ -60,7 +60,10 @@ outlierRejection <- function(input) {
     N[N < 1] <- 0 # numerical error
     mu <- filterViaFFT(input, H)/N
     mu[N == 0] <- 0
-    suppressWarnings(sigma <- sqrt(filterViaFFT( (input - mu)^2, H ) / N)) # this line gives a warning: In sqrt(filterViaFFT((input - mu)^2, H)/N) : NaNs produced
+    #suppressWarnings(sigma <- sqrt(filterViaFFT( (input - mu)^2, H ) / N)) # this is wrong
+
+    firstTerm <- filterViaFFT(input^2, H)/N
+    suppressWarnings(sigma <- sqrt(firstTerm - mu^2)) # this line gives a warning:
     sigma[N == 0] <- 0
 
     input[((input - mu)/sigma) > 3 & valid != 0] <- NA
@@ -77,10 +80,10 @@ outlierRejection <- function(input) {
 #' Fill in NA values
 #'
 #' This was translated from John D'Errico's MATLAB code:
-#' \link{https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans},
+#' \url{https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans},
 #' Copyright (c) 2009, John D'Errico.
 #'
-#' @param inputImage image matrix
+#' @param A image matrix
 #'
 #' @return A matrix with NA values filled in.
 #'

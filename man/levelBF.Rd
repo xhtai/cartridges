@@ -20,7 +20,7 @@ to NA. Removing residuals means that possible values are -255 to 255.
 \examples{
 \dontrun{
 # first run this:
-centeredExample <- center(FPexample, primerExample)
+centeredExample <- centerBFprimer(FPexample, primerExample)
 # then:
 leveledExample <- levelBF(centeredExample$centeredBF)
 }
