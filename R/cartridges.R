@@ -1,8 +1,8 @@
-#' cartridges: A package for computing signatures from cartridge images.
+#' cartridges: A package for comparing cartridge case images.
 #'
-#' This package contains utilities to read, center and plot cartridge images
-#' from the NIST Ballistics Toolmark database. It implements a method of
-#' creating a signature from such images. This is work in progress. Go to
+#' This package contains utilities to read and plot cartridge case images from
+#' the NIST Ballistics Toolmark database. It implements an algorithm to compare
+#' cartridge case images after pre-processing. Go to
 #' \url{https://github.com/xhtai/cartridges} for more information.
 #'
 #' @docType package

@@ -16,7 +16,7 @@
 #'   be used in a later step.
 #' @examples
 #' \dontrun{
-#' centeredExample <- center(FPexample, primerExample)
+#' centeredExample <- centerBFprimer(FPexample, primerExample)
 #' }
 #'
 #' @export
@@ -52,7 +52,7 @@ centerBFprimer <- function(inputImage, primer) {
 #' @examples
 #' \dontrun{
 #' # first run this:
-#' centeredExample <- center(FPexample, primerExample)
+#' centeredExample <- centerBFprimer(FPexample, primerExample)
 #' # then:
 #' leveledExample <- levelBF(centeredExample$centeredBF)
 #' }

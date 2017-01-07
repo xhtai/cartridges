@@ -12,7 +12,7 @@
 #' @examples
 #' \dontrun{
 #' # first run this:
-#' centeredExample <- center(FPexample, primerExample)
+#' centeredExample <- centerBFprimer(FPexample, primerExample)
 #' leveledExample <- levelBF(centeredExample$centeredBF)
 #' # then
 #' removedExample <- removeCircular(leveledExample)
@@ -34,6 +34,7 @@ removeCircular <- function(inputImage) {
 
     return(residuals)
 }
+
 
 #' Get ij coordinates for circularly symmetric basis functions
 #'
@@ -79,6 +80,7 @@ getBasisFunctions <- function(dimension) {
 
     return(basis)
 }
+# ACKNOWLEDGEMENTS: the plyr::dlply code was suggested by Max Mitchell.
 
 
 #' Get statistics for each basis function

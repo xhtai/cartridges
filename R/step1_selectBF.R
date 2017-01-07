@@ -83,8 +83,8 @@ findPrimer <- function(fileName) {
 #' @import methods
 
 findFP <- function(fileName, primer) {
-    if (!requireNamespace("imager", quietly = TRUE) || !requireNamespace("magrittr", quietly = TRUE) || !requireNamespace("purrr", quietly = TRUE) || !requireNamespace("dplyr", quietly = TRUE)) {
-        stop("This function uses a Canny edge detector, and this implementation requires the packages imager, magrittr, purrr, and dplyr. Please install them. For an example, see help(FPexample).", call. = FALSE)
+    if (!requireNamespace("imager", quietly = TRUE) || !requireNamespace("purrr", quietly = TRUE) || !requireNamespace("dplyr", quietly = TRUE)) {
+        stop("This function uses a Canny edge detector, and this implementation requires the packages imager, purrr, and dplyr. Please install them. For an example, see help(FPexample).", call. = FALSE)
     }
     ebimage <- EBImage::readImage(fileName)
     J <- ifelse(ebimage <= median(ebimage), 0, 1)
@@ -122,9 +122,6 @@ findFP <- function(fileName, primer) {
         se <- EBImage::makeBrush(9, 'disc')
         FP <- EBImage::dilate(FP, se)
     }
-    newI <- ebimage[337:2255, 13:1931]
-    newI[FP == 1] <- 0 #FP==1 (white) -- remove
-    newI[primer == 0] <- 0 #BW3==0 (black) -- remove (outer regions)
 
     # second pass for FP
     newJ <- J
@@ -142,8 +139,8 @@ findFP <- function(fileName, primer) {
     outebimage <- EBImage::Image(outtmp, colormode = 'Grayscale') # back to ebimage
 
     se <- EBImage::makeBrush(139, 'disc')
-    tmp <- EBImage::dilate(outebimage,se);
-    tmp <- EBImage::fillHull(tmp);
+    tmp <- EBImage::dilate(outebimage,se)
+    tmp <- EBImage::fillHull(tmp)
     se <- EBImage::makeBrush(139, 'disc')
     FP <- EBImage::erode(tmp, se)
 

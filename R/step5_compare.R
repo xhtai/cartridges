@@ -75,7 +75,7 @@ calculateCCFmax <- function(image1, image2, pad = TRUE) {
     if (pad == TRUE) {
         dim1 <- dim(image1_small)
         dim2 <- dim(image2_small)
-        max_size = max(c(dim(image1_small), dim(image2_small)))
+        max_size = max(c(dim1, dim2))
         padded1 <- matrix(0, nrow = max_size, ncol = max_size)
         padded2 <- matrix(0, nrow = max_size, ncol = max_size)
 

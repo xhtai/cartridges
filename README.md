@@ -31,9 +31,35 @@ These are the steps for one pairwise comparison. There are 4 pre-processing step
 5.  Maximize correlation by translations and rotations
 6.  Compute probability of obtaining a higher score by chance
 
--------------------------------------- the rest of this document needs updating
+Steps 2, 4 and 5 are implementations of work that has been done by Vorburger and co-authors (NISTIR, 2007), and Roth, Carriveau, Liu, Jain (IEEE, 2015). We illustrate each of these steps using an example image.
 
-To construct such a signature, we make use of the circular symmetry of the image. We assume that pixels located the same distance from the center of the image take the same value. We can then decompose each image into a linear combination of circularly symmetric basis. The first few matrices in the basis are given in the figure below, where each figure in the panel represents one matrix. Each matrix takes the value 1 for pixels that are the same distance from the center, and zero otherwise. Basis are enumerated from center outwards.
+### Step 1
+
+The first step is to automatically select the breechface marks, and this is broken into two steps, finding the primer region and then removing the firing pin impression. A rough schema for finding the primer region is as follows.
+
+![](README-primer.png)
+
+To remove the firing pin impression, we use use a similar set of steps, but we start with an edge detector to first identify the firing pin region. This would work even if the firing pin impression isn't circular.
+
+![](README-FP1.png)
+
+Now we perform a second pass where we apply an edge detector again, to try to remove any remaining marks that we might have missed the first time. This is necessary for some images where the firing pin impression might not be as highly contrasted with the surrounding breechface impression. In this particular example a second pass is not actually required, since the entire firing pin impression has been removed. Instead, several small marks on the breechface were picked out and removed. This is an unintended consequence but one that we live with for now. It turns out that we still achieve good results in later comparisons, but this is an area for further improvement.
+
+![](README-FP2.png)
+
+### Step 2
+
+Step 2 is to level the image. The reason for this step is that the base of the cartridge case may not be level, and may instead be tilted slightly on a plane. Images of such a surface may have differences in brightness that are planar in nature. Here we fit a plane that captures these differences, and taking the residuals ensures that the resulting image is free from such differences in brightness.
+
+In this example the original image is slightly darker in the bottom left corner and brighter on the top right, and we can see this in the left panel in the figure below. The residuals on the right panel are free from any such effects. We take the residuals for further processing.
+
+![](README-unnamed-chunk-3-1.png)
+
+### Step 3
+
+Step 3 is to remove any circular symmetry. The reason for this step is that apart from the base of the cartridge not being level, there could also be differences in depth that are circular in nature, for example the surface may slope inwards towards the center. This would cause differences in brightness that are circular in nature, for example the center of the image may be darker than the edges. Like in the previous step, we fit a model that captures this circular symmetry, and then take the residuals, so that the residuals would be free from any circular symmetry.
+
+The model that we are using is a linear combination of circularly symmetric basis functions. This model assumes that pixels located the same distance from the center of the image take the same value, and the first few matrices in the basis are given in the figure below, where each figure in the panel represents one matrix. Each matrix takes the value 1 for pixels that are the same distance from the center, and zero otherwise. Basis are enumerated from center outwards.
 
 ![](README-basis.png)
 
@@ -43,7 +69,44 @@ We represent these matrices as circularly symmetric basis functions, which take 
 
 ![](README-bulletPoints.png)
 
-The coefficient of each basis function is the mean of pixel values of pixels in that basis function, and these (or some function of these - further work is still being done) will form the image signature. The number of basis functions required depend on the size of the image. Standard images in the NIST database are 2592 x 1944 pixels, and after cropping to square we have images that are 1919 x 1919 pixels. A total of 276,569 basis functions are required for such images.
+To fit this model, the coefficient of each basis function is the mean of pixel values of pixels in that basis function. The fitted coefficients for our example image are in the figure below.
+
+![](README-basisCoefs.png)
+
+Because of the large number of basis functions, with each only containing only a few pixels, the variance of the coefficients is very high. We fit a local smoother through the coefficients to get a smoothed circularly symmetric model. The fitted model and the residuals are below. These residuals are free from both planar bias from the previous step, and circular symmetry.
+
+![](README-removeCircular.png)
+
+### Step 4
+
+The last pre-processing step is outlier removal and filtering. Outliers are removed and inpainted so that they won't affect the similarity scores being computed, and filtering highlights some features of the image. This methodology was described by Vorburger and co-authors (NISTIR, 2007) and implemented in MATLAB by Roth, Carriveau, Liu, Jain (IEEE, 2015).
+
+After all pre-processing, we get the following image.
+
+![](README-processed.png)
+
+### Step 5
+
+After pre-processing, step 5 involves computing a similarity metric. Again, this step was described by Vorburger and co-authors (NISTIR, 2007) and implemented in MATLAB by Roth, Carriveau, Liu, Jain (IEEE, 2015).
+
+The similarity metric is the correlation between the two images, and this is known in the literature as the maximum cross-correlation function, or *C**C**F*<sub>*m**a**x*</sub>. We first compute the cross-correlation function for each rotation angle:
+
+$$
+CCF(I\_1, I\_2) = \\frac{\\sum\_{i, j} I\_1(i, j)I\_2(i + dy, j + dx)}{\\sqrt{\\sum\_{i, j} I\_1(i, j)^2} \\sqrt{\\sum\_{i, j} I\_2(i, j)^2}}
+$$
+ where *I*<sub>1</sub> and *I*<sub>2</sub> are the two images, *i* indexes the rows and *j* indexes the columns, and *d**x* and *d**y* represent translations. The *C**C**F* returns a matrix of correlation values, where each entry corresponds to a particular translation, and we store the maximum correlation. Repeating for many rotation angles, we obtain *C**C**F*<sub>*m**a**x*</sub>. Since this is a correlation, it takes values between -1 and 1, and can be interpreted as the maximum correlation between two images after lining them up correctly.
+
+We compare our example image against another image from the NBIDE study, which was obtained using the same gun. We obtain a similarity score of .37, with a rotation angle of −15<sup>∘</sup>, meaning that the second image is rotated 15<sup>∘</sup> counter-clockwise. Plotting the two images with the second correctly rotated, we notice that the breechface marks are now lined up nicely.
+
+![](README-comparison.png)
+
+### Step 6
+
+The last step is to convert each similarity score into a statement of probability. In particular we compute the probability of obtaining a higher score by chance. These probabilities attach meaning to the scores, and also serve as a measure of uncertainty for this procedure. Our proposed method is as follows.
+
+We assume that all *C**C**F*<sub>*m**a**x*</sub> values for non-matches are drawn from the same distribution, and given such a distribution, we compare each newly computed score against this distribution, and compute the right tail proportion. This value is the probability of observing a higher CCFmax by chance.
+
+In reality, we do not have access to such a distribution. What we might have is a known database, where we are able to compute all pairwise non-matching scores. These form a sample from the unknown distribution. For example, using the NBIDE data set, we have a total of 108 images from 12 different guns. Doing all pairwise comparisons within the database, we have a total of 10692 non-match scores, which would form a sample from the unknown population of non-match scores. We can then compare .37 against this distribution.
 
 Installation
 ------------
@@ -57,20 +120,26 @@ library(devtools)
 devtools::install_github("xhtai/cartridges")
 ```
 
+`EBImage` is required and is hosted on Bioconductor. To install, use
+
+``` r
+source("https://bioconductor.org/biocLite.R")
+biocLite("EBImage")
+```
+
 After installing the `cartridges` package, load it using
 
 ``` r
 library(cartridges)
 ```
 
-For the function `readCropTIFF()` (see below) to work, you will also need to install either the `rgdal` package (recommended), or the `tiff` package. You can do so using `install.packages("rgdal")` or `install.packages("tiff")`.
+For full package functionality, the following packages are suggested: `fields`, `imager`, `purrr`, `dplyr` and `plyr`. You can install these using `install.packages()`. For `imager`, if you are using a Linux machine you might need `libX11` and `libfftw3` (`sudo apt-get install libfftw3-dev libX11-dev`). For more details see <https://github.com/dahtah/imager>.
 
 #### Difficulties using devtools
 
-If you are using a Linux machine, you might have some difficulties as `devtools` has a number of dependencies (e.g. `libssl-dev`, `libcurl4-gnutls-dev`). If you are unable to install these, you can download the [tarball](https://github.com/xhtai/cartridges/tarball/master) directly and install using `install.packages(file.choose(), repos=NULL)` or `R CMD INSTALL`. Before doing this, you will also need to install the following two R packages manually: `raster` and `fields`. You can do this using `install.packages()`.
+If you are using a Linux machine, you might have some difficulties as `devtools` has a number of dependencies (e.g. `libssl-dev`, `libcurl4-gnutls-dev`). If you are unable to install these, you can download the [tarball](https://github.com/xhtai/cartridges/tarball/master) directly and install using `install.packages(file.choose(), repos=NULL)` or `R CMD INSTALL`. Before doing this, you will also need to make sure that you have the following R packages installed: `EBImage`, `methods`, `Matrix` and `magrittr`. Then install `cartridges` using
 
 ``` r
-install.packages(c("raster", "fields"))
 install.packages(file.choose(), repos = NULL)
 ```
 
@@ -78,143 +147,101 @@ A window will pop-up and all you have to do is select the location of the .tar.g
 
 If you are using a Windows machine, you can do the same using a [.zip file](https://github.com/xhtai/cartridges/zipball/master).
 
-#### Difficulties with rgdal or tiff
-
-For `rgdal`, Linux users need to have the GDAL library installed. If you do not have it, use `sudo apt-get install libgdal-dev`. For `tiff`, you will need `libtiff4-dev`. If neither of these are available on your system and installing them is not an option, you might be out of luck. You may want to explore other tools for reading in TIFF files. A sample data set is pre-loaded and you can access it by simply referring to `LL1_3`. All other functions will still be available.
-
 Functions available
 -------------------
 
--   `readCropTIFF()`: to read in a raw image and obtain a matrix of pixel values
--   `plotImage()`: produces a plot from the matrix of pixel values
--   `shiftedImage()`: to shift the image to a specified center
--   `getBasisFunctions()`: to produce ij coordinates of the location of 1's for each basis function
--   `subsetBasis()`: returns basis functions with specified conditions, e.g. those with a certain number of pixels or those that are of a certain distance from the center
--   `statisticsByBasisFunction()`: calculates statistics for each basis function, e.g. mean of pixel values
--   `fitBasis()`: to fit basis functions and obtain coefficients for the image signature
--   `getFittedImage()`: produces a matrix of pixel values from the basis function coefficients
+-   `readCartridgeImage`: to read in a raw image and obtain a matrix of pixel values
+-   `plotImage`: produces a plot from a matrix of values. Values may be pixel values, residuals, etc.
+-   `allPreprocess`: performs steps 1-4 above
+-   `calculateCCFmax`: step 5 above
+-   `computeProb`: step 6 above
 
-These are for centering the image, and the methodology is described further in the section below.
+The remaining functions perform intermediate steps.
 
--   `roughCenter()`: computes a rough center location, to be used as a starting location for a grid search
--   `gridSearch()`: searches a grid of possible locations for the center of the image
--   `surfacePlot()`: produces a surface plot for determining the best location of the center
+-   Step 1: `findPrimer`, `findFP`
+-   Step 2: `centerBFprimer`, `levelBF`
+-   Step 3: `removeCircular`. Some more general functions for the circularly symmetric model are `getBasisFunctions`, `statisticsByBasisFunction`, `fitBasis`, and `getFitted`.
+-   Step 4: `cropBorders`, `outlierRejection`, `inpaint_nans`, `gaussianFilter`
+-   Step 5: `comparison`
 
 Help files with examples for each of these functions can be accessed using `help(functionName)` or `?functionName`, e.g. `help(plotImage)`.
-
-### Methods for centering images
-
-Before the basis functions are fitted, the image has to be properly centered. To determine an appropriate center, we first notice that images have a dark, symmetric outer ring. We fit the basis functions corresponding approximately to the radius of this ring, and if the image is properly centered, the fit obtained should be good.
-
-We use basis functions with radius 450-1000 pixels, and compute the residual sum of squares of the fit. A better fit would produce a smaller residual sum of squares. We search over a grid of possible values, and the location resulting in the smallest residual sum of squares is the best center location. This is visualized using `surfacePlot()`.
-
-As the grid search is a slow process, we can choose to use `roughCenter()` to first determine an appropriate starting location. This function is designed for speed and the center produced should not be used without first running `gridSearch()`. Briefly, the steps are as follows:
-
--   convert the images from 256-grayscale to binary values, with values from 0 to 127 taking the value 0 and those from 128 to 255 taking the value 1
--   along an input row, consider 201 possible center locations from columns 860 to 1060
--   at each possible center, sum the binary pixel values for each basis function. Find the longest continuous string of basis functions where the calculated sum is zero, and obtain the number of basis functions in that string.
--   the best column is the one with the longest continuous string of zeros
--   along the best column, consider 201 possible rows (100 above and 100 below the input row)
--   choose the center resulting in the longest string of continuous zeros.
-
-We recommend repeating this for rows 940 and 980. To speed up the process further, we can choose to use only basis functions with 8 pixels, as these are the most common.
 
 Example
 -------
 
-The following steps produce a signature for the example image above. This image is from the [Laura Lightstone study](http://www.nist.gov/forensics/ballisticsdb/lightstone-study.cfm) in the NIST database.
+In illustrating the steps above we processed an example image, taken from the NBIDE study in the NIST database. This is a 2D breechface ring light image, and the original filename in the NIST download is "NBIDE R BF 118.png". The cartridge being imaged is a test fire from a Ruger gun (gun 3 in the study), using PMC ammunition. The raw data can be accessed from this package using `system.file("extdata", "NBIDE R BF 118.png", package="cartridges")`.
 
-First read in the data:
-
-``` r
-LL1_3 <- readCropTIFF(system.file("extdata", "LL1_3.tif", package = "cartridges"))
-```
-
-We can plot this image:
+We can read in and plot the image as follows:
 
 ``` r
-plotImage(LL1_3, "original", grayscale = TRUE, main = "Cartridge Image from Laura Lightstone Study")
+exampleImage <- readCartridgeImage(system.file("extdata", "NBIDE R BF 118.png", 
+    package = "cartridges"))
+plotImage(exampleImage, type = "original")
 ```
 
-![](README-originalImage.png)
-
-Next we obtain the basis functions for an image of size 1919 x 1919 pixels. (Note that this might take up to half an hour, depending on your system. If you do not want to wait, the data produced is pre-loaded with this package and you can access it by just referring to `basis1919`, e.g. `length(basis1919)`.)
+We can perform all pre-processing using the following code. Note that this could take around 10 minutes or more, depending on your set-up. The processed image is available within the package, and can be accessed using `preprocessedExample`.
 
 ``` r
-basis1919 <- getBasisFunctions(1919)
+processedExample <- allPreprocess(system.file("extdata", "NBIDE R BF 118.png", 
+    package = "cartridges"))
 ```
 
-We take subsets of the basis functions by specifying the radius from the center of the outer ring (450-1000 pixels), and the number of pixels in each basis function.
+Now, a second processed image is available as `preprocessedExample2`, and this was produced using the same gun, so the similarity score should be high. To compare these two images, we use
 
 ``` r
-basis1919_rad450_1000 <- subsetBasis(basis1919, c(450, 1000))
-basis1919_8pixels_rad450_1000 <- subsetBasis(basis1919, c(450, 1000), 8)
+calculateCCFmax(processedExample, processedExample2)
 ```
 
-Now we determine a rough center by searching along row 980. Again, note that this is a long computation and may take up to half an hour. If you do not want to wait, the coordinates produced are (962, 964), and you can simply input this into `gridsearch()` using `gridsearch(LL1_3,basis1919_rad450_1000,962,964)`.
+This should take about a minute and produce a score of .37. Finally to determine the probability of obtaining a higher score by chance, we will need to obtain a known database of non-match scores. This was described earlier. Given such a set of scores, we can run
 
 ``` r
-out <- roughCenter(LL1_3, basis1919_8pixels_rad450_1000, 980)
-best <- out[which.max(out$maxRun), ]
+computeProb(0.37, knownScores)
 ```
 
-We then do a grid search for the smallest residual sum of squares, producing a surface plot for visualization. This could take up to an hour or more, and should produce the coordinates (970, 962) as the best center.
+to obtain the required probability.
+
+If we are interested in the results from each of the pre-processing steps, we can run each step manually using the following code. Because some of these steps take a while to run, the following `.rda` files are available in the package to illustrate the results from intermediate steps: `primerExample`, `FPexample`, `removedExample`, and `inpaintedExample`.
 
 ``` r
-RSSdtf <- gridSearch(LL1_3, basis1919_rad450_1000, best$i, best$j, plot = TRUE)
-best <- RSSdtf[which.min(RSSdtf$totalRSS), ]
+# step 1
+primerExample <- findPrimer(system.file("extdata", "NBIDE R BF 118.png", package = "cartridges"))
+FPexample <- findFP(system.file("extdata", "NBIDE R BF 118.png", package = "cartridges"), 
+    primer = primerExample)
+
+# step 2
+centeredExample <- centerBFprimer(FPexample, primerExample)
+leveledExample <- levelBF(centeredExample$centeredBF)
+
+# step 3
+removedExample <- removeCircular(leveledExample)
+
+# step 4
+croppedExample <- cropBorders(removedExample, centeredExample$centeredPrimer)
+outlierNAexample <- outlierRejection(croppedExample)
+inpaintedExample <- inpaint_nans(outlierNAexample)
+
+nonBF <- is.na(croppedExample)
+processedExample <- gaussianFilter(inpaintedExample, nonBF)
 ```
-
-![](README-LL1_3_RSSplot.png)
-
-With the center (970, 962), we shift the image as follows.
-
-``` r
-shifted <- shiftedImage(LL1_3, best$centeri, best$centerj)
-```
-
-We can then fit the basis functions using `LL1_3_basis <- fitBasis(shifted, basis1919)`, but a better alternative would be to first crop the image. This is because with the shifting process, we introduced a black border by setting pixels that were not available to 0. Cropping the image would remove this border.
-
-``` r
-shifted <- shifted[76:1844, 76:1844]
-LL1_3_basis <- fitBasis(shifted, basis1769)
-```
-
-Now with the fitted coefficients, we can obtain and plot the fitted 1769 x 1769 image.
-
-``` r
-fittedImage <- getFittedImage(LL1_3_basis, basis1769, 1769)
-plotImage(fittedImage, "original", grayscale = TRUE, main = "Fitted Image")
-```
-
-![](README-fittedImage.png)
-
-We can also obtain and plot the residuals.
-
-``` r
-residualImage <- shifted - fittedImage
-plotImage(residualImage, "residuals", grayscale = TRUE, main = "Residual Image")
-```
-
-![](README-residualImage.png)
 
 Further work
 ------------
 
-This is work in progress and there are many possible improvements to both the methodology and the code. Some of these are:
+There are possible improvements to both the methodology and the code. Some of these are:
 
--   Develop additional methods to model the residuals and capture the asymmetries
--   Reduce the dimension further by fitting a local smoother
--   Improve centering procedure
--   Many code speed-ups are possible
--   Error-checking for functions.
+-   The second pass for removing the firing pin impression results in some valid areas being removed
+-   Code speed-ups are possible, especially for steps 4 and 5, which were optimized for MATLAB
+-   Test on more data.
 
 Credits
 -------
 
-This is work with William F. Eddy. The NIST database is maintained by Xiaoyu Alan Zheng.
+This is work with William F. Eddy, with advice from Xiaoyu Alan Zheng, who also maintains the NIST database. Joseph Roth provided MATLAB code which we translated for steps 4 and 5. Max Mitchell suggested code speed-ups.
 
 License
 -------
 
 The `cartridges` package is licensed under GPLv3 (<http://www.gnu.org/licenses/gpl.html>).
+
+References
+----------
