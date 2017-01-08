@@ -34,7 +34,7 @@ centerBFprimer <- function(inputImage, primer) {
 
     centeredPrimer <- matrix(0, nrow = 1769, ncol = 1769)
     centeredPrimer[51:1719, 51:1719] <- primer[(centeri - 834):(centeri + 834), (centerj - 834):(centerj + 834)]
-    centeredPrimer[centeredPrimer == 0] <- NA
+    #centeredPrimer[centeredPrimer == 0] <- NA
 
     return(list(centeredBF = centeredBF, centeredPrimer = centeredPrimer))
 }

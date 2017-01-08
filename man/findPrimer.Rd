@@ -16,12 +16,12 @@ A 1919 x 1919 binary image in \code{EBImage} format. Values 1
 }
 \description{
 Images must be of the standard format as provided in the NIST Ballistics and
-Research Toolmark Database. The dimensions are 1944 x 2592 pixels, and images
-are on a 255-grayscale. Here we use ring light images. This function finds
-the primer region, which is the circular region containing the breechface
-marks and firing pin impression. By default images are cropped to 1919 x 1919
-pixels. For more information on the steps involved in finding this region,
-refer to the GitHub page.
+Research Toolmark Database. The dimensions are 1944 x 2592 pixels (1944 is
+the height), and images are on a 255-grayscale. Here we use ring light
+images. This function finds the primer region, which is the circular region
+containing the breechface marks and firing pin impression. By default images
+are cropped to 1919 x 1919 pixels. For more information on the steps involved
+in finding this region, refer to the GitHub page.
 }
 \details{
 This function uses the \code{EBImage} package, which stores the image as a

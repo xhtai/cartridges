@@ -71,7 +71,7 @@ In this example the original image is slightly darker in the bottom left corner 
 
 ![](README-unnamed-chunk-3-1.png)
 
-```{r, echo = FALSE, fig.width = 6, fig.height = 3, eval = FALSE}
+```{r, echo = FALSE, fig.width = 4, fig.height = 2, eval = FALSE}
 library(devtools)
 devtools::load_all(quiet = TRUE)
 centeredExample <- centerBFprimer(FPexample, primerExample)
@@ -342,7 +342,7 @@ processedExample <- gaussianFilter(inpaintedExample, nonBF)
 There are possible improvements to both the methodology and the code. Some of these are:
 
 * The second pass for removing the firing pin impression results in some valid areas being removed. In particular in the NBIDE data set, performance on images 9, 110 and 128 can be improved.
-* Code speed-ups are possible, especially for steps 4 and 5, which were optimized for MATLAB
+* Code speed-ups are possible, especially for steps 4 and 5, which were optimized for MATLAB. In particular, inpaint_nans was translated line by line from [published code by John D'Errico](https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans), and is extremely slow in R.
 * Test on more data.
 
 ## Credits

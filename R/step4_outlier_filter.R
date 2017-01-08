@@ -22,8 +22,8 @@
 #' @export
 
 cropBorders <- function(image, primer) {
-    primerRows <- which(Matrix::rowSums(!is.na(primer)) > 0)
-    primerCols <- which(Matrix::colSums(!is.na(primer)) > 0)
+    primerRows <- which(Matrix::rowSums(primer != 0) > 0)
+    primerCols <- which(Matrix::colSums(primer != 0) > 0)
 
     cropped <- image[primerRows, primerCols]
     return(cropped)

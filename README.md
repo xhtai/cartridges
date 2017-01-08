@@ -229,7 +229,7 @@ Further work
 There are possible improvements to both the methodology and the code. Some of these are:
 
 -   The second pass for removing the firing pin impression results in some valid areas being removed. In particular in the NBIDE data set, performance on images 9, 110 and 128 can be improved.
--   Code speed-ups are possible, especially for steps 4 and 5, which were optimized for MATLAB
+-   Code speed-ups are possible, especially for steps 4 and 5, which were optimized for MATLAB. In particular, inpaint\_nans was translated line by line from [published code by John D'Errico](https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans), and is extremely slow in R.
 -   Test on more data.
 
 Credits
