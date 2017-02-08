@@ -191,10 +191,10 @@ Now, a second processed image is available as `preprocessedExample2`, and this w
 calculateCCFmax(processedExample, processedExample2)
 ```
 
-This should take about a minute and produce a score of .37. Finally to determine the probability of obtaining a higher score by chance, we will need to obtain a known database of non-match scores. This was described earlier. Given such a set of scores, we can run
+This should take about a minute and produce a score of .36. Finally to determine the probability of obtaining a higher score by chance, we will need to obtain a known database of non-match scores. This was described earlier. Given such a set of scores, we can run
 
 ``` r
-computeProb(0.37, knownScores)
+computeProb(0.36, knownScores)
 ```
 
 to obtain the required probability.
