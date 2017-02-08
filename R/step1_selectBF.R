@@ -34,7 +34,7 @@ findPrimer <- function(fileName) {
     sigma <- 25
     blurred <- EBImage::gblur(I, sigma, radius = 2 * ceiling(2 * sigma) + 1)
 
-    equalized <- ifelse(blurred <= median(blurred), 0, 1)
+    equalized <- makeBinary(blurred)
 
     # imfill
     tmp <- EBImage::fillHull(equalized)
@@ -87,21 +87,21 @@ findFP <- function(fileName, primer) {
         stop("This function uses a Canny edge detector, and this implementation requires the packages imager, purrr, and dplyr. Please install them. For an example, see help(FPexample).", call. = FALSE)
     }
     ebimage <- EBImage::readImage(fileName)
-    J <- ifelse(ebimage <= median(ebimage), 0, 1)
+    J <- makeBinary(ebimage)
     J <- J[337:2255, 13:1931]
 
     # canny
-    sigma <- 22 # changed from 32
+    sigma <- 32
     blurred <- EBImage::gblur(J, sigma)
 
     tmp <- blurred@.Data
     imagerImage <- imager::as.cimg(tmp)
-    out <- cannyEdges(imagerImage*255, q1 = .89*.4, q2 = .89)
+    out <- cannyEdges(imagerImage*255, q1 = .83*.4, q2 = .83)
 
     out[primer == 0] <- 0
 
     if (sum(out) < 2000) {
-        thres <- .89
+        thres <- .83
         while (sum(out) < 2000) {
             thres <- thres - .02
             out <- cannyEdges(imagerImage*255, q1 = thres*.4, q2 = thres)
@@ -126,13 +126,13 @@ findFP <- function(fileName, primer) {
     # second pass for FP
     newJ <- J
     newJ[primer == 0] <- 1 # 1 instead of 255
-    newJ[FP == 1] <- 1 # 1 instead of 0 -- make the FP white not black
+    newJ[FP == 1] <- 0
 
-    sigma <- 2.5 # changed from 2 -- blur more
+    sigma <- 10 # changed from 2 -- blur more
     blurred <- EBImage::gblur(newJ, sigma)
     tmp <- blurred@.Data
     imagerImage <- imager::as.cimg(tmp)
-    tmp <- cannyEdges(imagerImage*255, q1 = .1, q2 = .98) # change q1 to .1 -- let more weakly connected components be found
+    tmp <- cannyEdges(imagerImage*255, q1 = .2, q2 = .9)
 
     outtmp <- as.matrix(tmp) + FP@.Data # combine with earlier FP
     outtmp[outtmp > 1] <- 1
@@ -204,3 +204,12 @@ cannyEdges <- function(im, q1, q2){
 
 }
 
+makeBinary <- function(image) {
+    med <- median(image)
+    ret1 <- ifelse(image < med, 0, 1)
+    diff1 <- abs(sum(ret1 == 1) - sum(ret1 == 0))
+    ret2 <- ifelse(image <= med, 0, 1)
+    diff2 <- abs(sum(ret2 == 1) - sum(ret2 == 0))
+
+    if (diff1 <= diff2) return(ret1) else return(ret2)
+}

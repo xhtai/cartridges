@@ -31,7 +31,7 @@ These are the steps for one pairwise comparison. There are 4 pre-processing step
 5.  Maximize correlation by translations and rotations
 6.  Compute probability of obtaining a higher score by chance
 
-Steps 2, 4 and 5 are implementations of work that has been done by Vorburger and co-authors (NISTIR, 2007), and Roth, Carriveau, Liu, Jain (IEEE, 2015). We illustrate each of these steps using an example image.
+Steps 2, 4 and 5 are implementations (with modifications) of work that has been done at NIST (Vorburger et al. 2007) and other groups (Roth et al. 2015). We illustrate each of these steps using an example image.
 
 ### Step 1
 
@@ -43,7 +43,7 @@ To remove the firing pin impression, we use use a similar set of steps, but we s
 
 ![](README-FP1.png)
 
-Now we perform a second pass where we apply an edge detector again, to try to remove any remaining marks that we might have missed the first time. This is necessary for some images where the firing pin impression might not be as highly contrasted with the surrounding breechface impression. In this particular example a second pass is not actually required, since the entire firing pin impression has been removed. Instead, several small marks on the breechface were picked out and removed. This is an unintended consequence but one that we live with for now. It turns out that we still achieve good results for most images in later comparisons, but this is an area for further improvement (TODO: in particular, in the NBIDE data set, NBIDE009, NBIDE110, NBIDE128 have poorer performance due to this step).
+Now we perform a second pass where we apply an edge detector again, to try to remove any remaining marks that we might have missed the first time. This is necessary for some images where the firing pin impression might not be as highly contrasted with the surrounding breechface impression. In this particular example a second pass is not actually required, since the entire firing pin impression has been removed, and we see no change to the image after this step.
 
 ![](README-FP2.png)
 
@@ -53,13 +53,13 @@ Step 2 is to level the image. The reason for this step is that the base of the c
 
 In this example the original image is slightly darker in the bottom left corner and brighter on the top right, and we can see this in the left panel in the figure below. The residuals on the right panel are free from any such effects. We take the residuals for further processing.
 
-![](README-unnamed-chunk-3-1.png)
+![](README-level.png)
 
 ### Step 3
 
 Step 3 is to remove any circular symmetry. The reason for this step is that apart from the base of the cartridge not being level, there could also be differences in depth that are circular in nature, for example the surface may slope inwards towards the center. This would cause differences in brightness that are circular in nature, for example the center of the image may be darker than the edges. Like in the previous step, we fit a model that captures this circular symmetry, and then take the residuals, so that the residuals would be free from any circular symmetry.
 
-The model that we are using is a linear combination of circularly symmetric basis functions. This model assumes that pixels located the same distance from the center of the image take the same value, and the first few matrices in the basis are given in the figure below, where each figure in the panel represents one matrix. Each matrix takes the value 1 for pixels that are the same distance from the center, and zero otherwise. Basis are enumerated from center outwards.
+The model that we are using is a linear combination of circularly symmetric basis functions (Zeifman and Eddy 2017). This model assumes that pixels located the same distance from the center of the image take the same value, and the first few matrices in the basis are given in the figure below, where each figure in the panel represents one matrix. Each matrix takes the value 1 for pixels that are the same distance from the center, and zero otherwise. Basis are enumerated from center outwards.
 
 ![](README-basis.png)
 
@@ -79,7 +79,7 @@ Because of the large number of basis functions, with each only containing only a
 
 ### Step 4
 
-The last pre-processing step is outlier removal and filtering. Outliers are removed and inpainted so that they won't affect the similarity scores being computed, and filtering highlights some features of the image. This methodology was described by Vorburger and co-authors (NISTIR, 2007) and implemented in MATLAB by Roth, Carriveau, Liu, Jain (IEEE, 2015).
+The last pre-processing step is outlier removal and filtering. Outliers are removed and inpainted so that they won't affect the similarity scores being computed, and filtering highlights some features of the image. This methodology was described in (<span class="citeproc-not-found" data-reference-id="NIST2007">**???**</span>) and implemented in MATLAB in (Roth et al. 2015).
 
 After all pre-processing, we get the following image.
 
@@ -87,7 +87,7 @@ After all pre-processing, we get the following image.
 
 ### Step 5
 
-After pre-processing, step 5 involves computing a similarity metric. Again, this step was described by Vorburger and co-authors (NISTIR, 2007) and implemented in MATLAB by Roth, Carriveau, Liu, Jain (IEEE, 2015).
+After pre-processing, step 5 involves computing a similarity metric. Again, this step is in (Vorburger et al. 2007) and (Roth et al. 2015).
 
 The similarity metric is the correlation between the two images, and this is known in the literature as the maximum cross-correlation function, or *C**C**F*<sub>*m**a**x*</sub>. We first compute the cross-correlation function for each rotation angle:
 
@@ -95,7 +95,7 @@ The similarity metric is the correlation between the two images, and this is kno
 
 where *I*<sub>1</sub> and *I*<sub>2</sub> are the two images, *i* indexes the rows and *j* indexes the columns, and *d**x* and *d**y* represent translations. The *C**C**F* returns a matrix of correlation values, where each entry corresponds to a particular translation, and we store the maximum correlation. Repeating for many rotation angles, we obtain *C**C**F*<sub>*m**a**x*</sub>. Since this is a correlation, it takes values between -1 and 1, and can be interpreted as the maximum correlation between two images after lining them up correctly.
 
-We compare our example image against another image from the NBIDE study, which was obtained using the same gun. We obtain a similarity score of .37, with a rotation angle of −15<sup>∘</sup>, meaning that the second image is rotated 15<sup>∘</sup> counter-clockwise. Plotting the two images with the second correctly rotated, we notice that the breechface marks are now lined up nicely.
+We compare our example image against another image from the NBIDE study, which was obtained using the same gun. We obtain a similarity score of .36, with a rotation angle of −15<sup>∘</sup>, meaning that the second image is rotated 15<sup>∘</sup> counter-clockwise. Plotting the two images with the second correctly rotated, we notice that the breechface marks are now lined up nicely.
 
 ![](README-comparison.png)
 
@@ -105,7 +105,7 @@ The last step is to convert each similarity score into a statement of probabilit
 
 We assume that all *C**C**F*<sub>*m**a**x*</sub> values for non-matches are drawn from the same distribution, and given such a distribution, we compare each newly computed score against this distribution, and compute the right tail proportion. This value is the probability of observing a higher *C**C**F*<sub>*m**a**x*</sub> by chance.
 
-In reality, we do not have access to such a distribution. What we might have is a known database, where we are able to compute all pairwise non-matching scores. These form a sample from the unknown distribution. For example, using the NBIDE data set, we have a total of 108 images from 12 different guns. Doing all pairwise comparisons within the database, we have a total of 10692 non-match scores, which would form a sample from the unknown population of non-match scores. We can then compare .37 against this distribution.
+In reality, we do not have access to such a distribution. What we might have is a known database, where we are able to compute all pairwise non-matching scores. These form a sample from the unknown distribution. For example, using the NBIDE data set, for each new image we have a total of 107 images in the known database. Doing all pairwise comparisons within the database, we have a total of 10494 non-match scores, which would form a sample from the unknown population of non-match scores. We can then compare .36 against this distribution.
 
 Installation
 ------------
@@ -228,8 +228,7 @@ Further work
 
 There are possible improvements to both the methodology and the code. Some of these are:
 
--   The second pass for removing the firing pin impression results in some valid areas being removed. In particular in the NBIDE data set, performance on images 9, 110 and 128 can be improved.
--   Code speed-ups are possible, especially for steps 4 and 5, which were optimized for MATLAB. In particular, inpaint\_nans was translated line by line from [published code by John D'Errico](https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans), and is extremely slow in R.
+-   Code speed-ups are possible, especially for steps 4 and 5, which were optimized for MATLAB. In particular, inpaint\_nans was translated line by line from [published code by John D'Errico](https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans) (D’Errico 2004), and is extremely slow in R.
 -   Test on more data.
 
 Credits
@@ -244,3 +243,11 @@ The `cartridges` package is licensed under GPLv3 (<http://www.gnu.org/licenses/g
 
 References
 ----------
+
+D’Errico, John. 2004. “Inpaint\_nans.” MATLAB Central File Exchange. <https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans>.
+
+Roth, J., A. Carriveau, X. Liu, and A. K. Jain. 2015. “Learning-Based Ballistic Breech Face Impression Image Matching.” In *2015 Ieee 7th International Conference on Biometrics Theory, Applications and Systems (Btas)*, 1–8. doi:[10.1109/BTAS.2015.7358774](https://doi.org/10.1109/BTAS.2015.7358774).
+
+Vorburger, T., J. Yen, B. Bachrach, T. Renegar, J. Filliben, L. Ma, H. Rhee, et al. 2007. “Surface Topography Analysis for a Feasibility Assessment of a National Ballistics Imaging Database.” National Institute of Standards; Technology.
+
+Zeifman, Lubov E., and William F. Eddy. 2017. “Statistical Estimation of the Point Spread Function of the Hubble Space Telescope.”
