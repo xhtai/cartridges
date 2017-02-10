@@ -29,6 +29,9 @@
 
 findPrimer <- function(fileName) {
     ebimage <- EBImage::readImage(fileName)
+    if (length(dim(ebimage)) == 3) {
+        ebimage <- ebimage[, , 1]
+    }
     I <- ebimage[337:2255, 13:1931]
 
     sigma <- 25
@@ -87,6 +90,9 @@ findFP <- function(fileName, primer) {
         stop("This function uses a Canny edge detector, and this implementation requires the packages imager, purrr, and dplyr. Please install them. For an example, see help(FPexample).", call. = FALSE)
     }
     ebimage <- EBImage::readImage(fileName)
+    if (length(dim(ebimage)) == 3) {
+        ebimage <- ebimage[, , 1]
+    }
     J <- makeBinary(ebimage)
     J <- J[337:2255, 13:1931]
 

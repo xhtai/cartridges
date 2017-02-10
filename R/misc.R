@@ -15,6 +15,9 @@
 #'
 readCartridgeImage <- function(fileName){
     ret <- EBImage::readImage(fileName)
+    if (length(dim(ret)) == 3) {
+        ret <- ret[, , 1]
+    }
     ret <- t(ret@.Data * 255)
     return(ret)
 }
