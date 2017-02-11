@@ -44,7 +44,8 @@ findPrimer <- function(fileName) {
 
     # bwlabel -- choose the center region
     L = EBImage::bwlabel(tmp)
-    ij <- matrix(c(959, 600, 1200, 959, 959, 960, 960, 960, 600, 1200), ncol = 2)
+    ij <- matrix(c(959, 600, 1200, 959, 959, 780, 780, 1080, 1080,
+                   960, 960, 960, 600, 1200, 780, 1080, 780, 1080), ncol = 2)
 
     Mode <- function(x) {
         ux <- unique(x)
