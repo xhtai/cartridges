@@ -29,11 +29,13 @@ centerBFprimer <- function(inputImage, primer) {
     centerj <- round(mean(indices[, "col"]))
 
     centeredBF <- matrix(0, nrow = 1769, ncol = 1769)
-    centeredBF[51:1719, 51:1719] <- inputImage[(centeri - 834):(centeri + 834), (centerj - 834):(centerj + 834)] # here we are assuming that biggest BF is < 1669px diameter
+    # centeredBF[51:1719, 51:1719] <- inputImage[(centeri - 834):(centeri + 834), (centerj - 834):(centerj + 834)] # here we are assuming that biggest BF is < 1669px diameter
+    centeredBF[56:1714, 56:1714] <- inputImage[(centeri - 829):(centeri + 829), (centerj - 829):(centerj + 829)] # 3/18/2019: change from 834 to 829 because an image has centeri == 830. biggest BF < 1659px
     centeredBF[centeredBF == 0] <- NA
 
     centeredPrimer <- matrix(0, nrow = 1769, ncol = 1769)
-    centeredPrimer[51:1719, 51:1719] <- primer[(centeri - 834):(centeri + 834), (centerj - 834):(centerj + 834)]
+    # centeredPrimer[51:1719, 51:1719] <- primer[(centeri - 834):(centeri + 834), (centerj - 834):(centerj + 834)]
+    centeredPrimer[56:1714, 56:1714] <- primer[(centeri - 829):(centeri + 829), (centerj - 829):(centerj + 829)] # 3/18/2019: change from 834 to 829 because an image has centeri == 830. biggest BF < 1659px
     #centeredPrimer[centeredPrimer == 0] <- NA
 
     return(list(centeredBF = centeredBF, centeredPrimer = centeredPrimer))

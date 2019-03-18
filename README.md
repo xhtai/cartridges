@@ -59,7 +59,7 @@ In this example the original image is slightly darker in the bottom left corner 
 
 Step 3 is to remove any circular symmetry. The reason for this step is that apart from the base of the cartridge not being level, there could also be differences in depth that are circular in nature, for example the surface may slope inwards towards the center. This would cause differences in brightness that are circular in nature, for example the center of the image may be darker than the edges. Like in the previous step, we fit a model that captures this circular symmetry, and then take the residuals, so that the residuals would be free from any circular symmetry.
 
-The model that we are using is a linear combination of circularly symmetric basis functions (Zeifman and Eddy 2017). This model assumes that pixels located the same distance from the center of the image take the same value, and the first few matrices in the basis are given in the figure below, where each figure in the panel represents one matrix. Each matrix takes the value 1 for pixels that are the same distance from the center, and zero otherwise. Basis are enumerated from center outwards.
+The model that we are using is a linear combination of circularly symmetric basis functions (Zeifman 2014). This model assumes that pixels located the same distance from the center of the image take the same value, and the first few matrices in the basis are given in the figure below, where each figure in the panel represents one matrix. Each matrix takes the value 1 for pixels that are the same distance from the center, and zero otherwise. Basis are enumerated from center outwards.
 
 ![](README-basis.png)
 
@@ -244,10 +244,10 @@ The `cartridges` package is licensed under GPLv3 (<http://www.gnu.org/licenses/g
 References
 ----------
 
-D’Errico, John. 2004. “Inpaint\_nans.” MATLAB Central File Exchange. <https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans>.
+D’Errico, John. 2004. “Inpaint\_nans.” MATLAB Central File Exchange, <https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint-nans> (accessed April 28, 2017).
 
-Roth, J., A. Carriveau, X. Liu, and A. K. Jain. 2015. “Learning-Based Ballistic Breech Face Impression Image Matching.” In *2015 Ieee 7th International Conference on Biometrics Theory, Applications and Systems (Btas)*, 1–8. doi:[10.1109/BTAS.2015.7358774](https://doi.org/10.1109/BTAS.2015.7358774).
+Roth, J., A. Carriveau, X. Liu, and A. K. Jain. 2015. “Learning-Based Ballistic Breech Face Impression Image Matching.” In *2015 Ieee 7th International Conference on Biometrics Theory, Applications and Systems (Btas)*, 1–8. Arlington, VA. doi:[10.1109/BTAS.2015.7358774](https://doi.org/10.1109/BTAS.2015.7358774).
 
-Vorburger, T., J. Yen, B. Bachrach, T. Renegar, J. Filliben, L. Ma, H. Rhee, et al. 2007. “Surface Topography Analysis for a Feasibility Assessment of a National Ballistics Imaging Database.” National Institute of Standards; Technology.
+Vorburger, T., J. Yen, B. Bachrach, T. Renegar, J. Filliben, L. Ma, H. Rhee, et al. 2007. “Surface Topography Analysis for a Feasibility Assessment of a National Ballistics Imaging Database.” NISTIR 7362. Gaithersburg, MD: National Institute of Standards; Technology.
 
-Zeifman, Lubov E., and William F. Eddy. 2017. “Statistical Estimation of the Point Spread Function of the Hubble Space Telescope.”
+Zeifman, Lubov E. 2014. *A New Parametric Model for the Point Spread Function (Psf) and Its Application to Hubble Space Telescope Data \[Dissertation\]*. Pittsburgh, PA: Carnegie Mellon University; Carnegie Mellon University.

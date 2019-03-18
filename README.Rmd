@@ -266,8 +266,8 @@ fitted <- matrix(dataframe$fitted, nrow = 1769)
 
 png(file = "/home/xtai/Desktop/cartridges/README-level.png", width = 600, height = 300)
 par(mfrow = c(1, 2))
-plotImage(fitted, type = "any")
-plotImage(leveled, type = "any")
+plotImage(fitted, type = "any", grayscale = TRUE, main = "Fitted image")
+plotImage(leveled, type = "any", grayscale = TRUE, main = "Residual image")
 dev.off()
 ```
 
@@ -332,7 +332,7 @@ basis$fitted[!is.na(basis$coef)] <- fittedOut
 # plot coefficients
 png(file = "/home/xtai/Desktop/cartridges/README-basisCoefs.png", width = 500, height = 300)
 plot(basis$basisFnNumber, basis$coef, cex = .001, main = paste0("Coefficients for Each Basis Function"), xlab = "Basis Function Number", ylab = "Basis coefficient", xlim = c(0, 150000))
-mtext(paste0("Effective number of parameters = ", sprintf("%.2f", out$enp)))
+#mtext(paste0("Effective number of parameters = ", sprintf("%.2f", out$enp)))
 lines(basis$basisFnNumber, basis$fitted, col = "red", lwd = 5)
 legend("topright", legend = "Smoothed coefficients", lwd = 5, col = "red")
 dev.off()
@@ -343,8 +343,8 @@ residuals <- inputImage - fitted
 
 png(file = "/home/xtai/Desktop/cartridges/README-removeCircular.png", width = 600, height = 300)
 par(mfrow = c(1, 2))
-plotImage(fitted, type = "any")
-plotImage(residuals, type = "any")
+plotImage(fitted, type = "any", grayscale = TRUE, main = "Fitted image")
+plotImage(residuals, type = "any", grayscale = TRUE, main = "Residual image")
 dev.off()
 ```
 
@@ -406,10 +406,28 @@ tmp[tmp == 0] <- NA
 tmp1 <- padded1
 tmp1[tmp1 == 0] <- NA
 
-png(file = "/home/xtai/Desktop/cartridges/README-comparison.png", width = 600, height = 300)
-par(mfrow = c(1, 2))
-plotImage(tmp1, type = "any")
-plotImage(tmp, type = "any")
+differenceImage <- tmp1 - tmp
+
+tmpPlot <- function(image, main) {
+    numRow <- nrow(image)
+    numCol <- ncol(image)
+    par(mar = c(2.1, 2.1, 6.1, 8.1))
+    plot(c(1, numCol), c(1, numRow), type = "n", xaxt = "n", 
+    yaxt = "n", xlab = "", ylab = "", yaxs = "i", xaxs = "i", 
+    main = main, cex.main = 2.5)
+    
+    rasterImage((image - min(image, na.rm = TRUE))/(max(image, 
+        na.rm = TRUE) - min(image, na.rm = TRUE)), 1, 
+        1, numCol, numRow, interpolate = FALSE)
+    fields::image.plot(legend.only = TRUE, zlim = c(min(image, 
+        na.rm = TRUE), max(image, na.rm = TRUE)), col = gray(0:255/255), axis.args = list(cex.axis = 2))
+}
+
+png(file = "/home/xtai/Desktop/cartridges/README-comparison.png", width = 960, height = 300)
+par(mfrow = c(1, 3))
+tmpPlot(tmp1, main = "Example image")
+tmpPlot(tmp, main = "Image from same gun")
+tmpPlot(differenceImage, main = "Difference image")
 dev.off()
 ```
 
