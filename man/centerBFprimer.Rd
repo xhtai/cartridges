@@ -31,4 +31,3 @@ centeredExample <- centerBFprimer(FPexample, primerExample)
 }
 
 }
-

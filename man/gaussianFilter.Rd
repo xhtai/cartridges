@@ -31,4 +31,3 @@ processedExample <- gaussianFilter(inpaintedExample, nonBF)
 }
 
 }
-

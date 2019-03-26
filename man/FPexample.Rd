@@ -20,4 +20,3 @@ breechface impression are set to 0, and the remaining pixel values are left
 as is.
 }
 \keyword{datasets}
-

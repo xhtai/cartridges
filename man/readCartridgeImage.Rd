@@ -23,4 +23,3 @@ exampleImage <- readCartridgeImage(system.file("extdata", "NBIDE R BF 118.png",
  package="cartridges"))
 }
 }
-

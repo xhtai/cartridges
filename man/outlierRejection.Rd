@@ -28,4 +28,3 @@ outlierNAexample <- outlierRejection(croppedExample)
 }
 
 }
-

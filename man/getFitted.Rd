@@ -31,4 +31,3 @@ basis <- fitBasis(centeredExample, basis1769)
 fitted <- getFitted(basis$fitted, basis1769, 1769)
 }
 }
-

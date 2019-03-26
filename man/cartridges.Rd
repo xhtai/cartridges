@@ -11,4 +11,3 @@ the NIST Ballistics Toolmark database. It implements an algorithm to compare
 cartridge case images after pre-processing. Go to
 \url{https://github.com/xhtai/cartridges} for more information.
 }
-

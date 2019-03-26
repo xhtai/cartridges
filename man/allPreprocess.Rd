@@ -29,4 +29,3 @@ processedExample <- allPreprocess(system.file("extdata", "NBIDE R BF 118.png", p
 }
 
 }
-

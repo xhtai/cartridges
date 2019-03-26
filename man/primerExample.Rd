@@ -17,4 +17,3 @@ Primer region, as returned by \code{findPrimer("NBIDE R BF 118.png")}. This
 is part of the first pre-processing step.
 }
 \keyword{datasets}
-

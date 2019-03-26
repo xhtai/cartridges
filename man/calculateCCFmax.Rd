@@ -40,4 +40,3 @@ calculateCCFmax(processedExample, processedExample2)
 }
 
 }
-

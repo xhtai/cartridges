@@ -30,4 +30,3 @@ FPexample <- findFP(system.file("extdata", "NBIDE R BF 118.png", package = "cart
 }
 
 }
-

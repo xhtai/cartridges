@@ -29,4 +29,3 @@ computeProb(.1, rnorm(50, .07, 1))
 }
 
 }
-

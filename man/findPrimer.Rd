@@ -36,4 +36,3 @@ primerExample <- findPrimer(system.file("extdata", "NBIDE R BF 118.png", package
 }
 
 }
-

@@ -26,4 +26,3 @@ leveledExample <- levelBF(centeredExample$centeredBF)
 }
 
 }
-

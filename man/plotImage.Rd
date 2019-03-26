@@ -33,4 +33,3 @@ the matrix, and the bottom-right pixel is the last entry.
 plotImage(processedExample, type = "any")
 }
 }
-

@@ -25,4 +25,3 @@ are much smaller in magnitude. Pixels that are not part of the breechface
 marks are set to 0.
 }
 \keyword{datasets}
-

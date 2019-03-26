@@ -23,4 +23,3 @@ Fit basis functions to a centered image.
 basis3 <- getBasisFunctions(3)
 sampleBasis <- fitBasis(matrix(1:9,nrow=3),basis3)
 }
-

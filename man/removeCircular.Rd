@@ -28,4 +28,3 @@ removedExample <- removeCircular(leveledExample)
 }
 
 }
-

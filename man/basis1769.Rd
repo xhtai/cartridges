@@ -24,4 +24,3 @@ For more details see \url{https://github.com/xhtai/cartridges}. These data
 are produced by \code{\link{getBasisFunctions}}.
 }
 \keyword{datasets}
-

@@ -28,4 +28,3 @@ symmetric basis functions.
 \examples{
 basis3 <- getBasisFunctions(3)
 }
-

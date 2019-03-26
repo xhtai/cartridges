@@ -27,4 +27,3 @@ inpaintedExample <- inpaint_nans(outlierNAexample)
 }
 
 }
-

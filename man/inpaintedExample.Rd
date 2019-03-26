@@ -33,4 +33,3 @@ inpaintedExample <- inpaint_nans(outlierNAexample)
 Areas that are not part of the breechface impression are set to 0.
 }
 \keyword{datasets}
-

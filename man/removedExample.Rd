@@ -29,4 +29,3 @@ run after \code{levelBF}, removing residuals again means that possible values
 are -510 to 510.
 }
 \keyword{datasets}
-
