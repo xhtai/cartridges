@@ -102,6 +102,7 @@ calculateCCFmaxSearch <- function(image1, image2, pad = TRUE) {
 #'   match and a column `corrMax`
 #'
 #' @export
+#' @importFrom dplyr inner_join
 
 removeDups <- function(allResults, similarityCol) {
     out <- dplyr::inner_join(allResults[, c("compare", "newImage", similarityCol, "match")], allResults[, c("compare", "newImage", similarityCol)], by = c("compare" = "newImage", "newImage" = "compare")) # corr.x and corr.y
@@ -116,6 +117,13 @@ removeDups <- function(allResults, similarityCol) {
     out <- out[duplicated(out[, c("compare", "newImage", "corrMax")]) == FALSE, ]
     return(out)
 }
+
+
+# from GraphAT package
+clust2Mat<-function(memb){
+    N<-length(memb)
+    return(as.numeric(outer(memb, memb, FUN="=="))-outer(1:N,1:N,"=="))}
+
 
 #' Hierarchical clustering to generate final clusters
 #'
@@ -134,6 +142,7 @@ removeDups <- function(allResults, similarityCol) {
 #' @return vector (logical) indicating if pair is matched or not, length is the
 #'   same as `pairs`
 #' @export
+#' @importFrom protoclust protocut protoclust
 
 linksAnalysis <- function(pairs, predCol, myCutoff, myMethod, hash1, hash2) {
     tmp <- which(pairs[, predCol] >= myCutoff)
@@ -166,14 +175,7 @@ linksAnalysis <- function(pairs, predCol, myCutoff, myMethod, hash1, hash2) {
             clustersAll <- protoclust::protocut(hcluster, h = 1 - myCutoff)$cl
         }
 
-        out <- data.frame(clustersAll) %>% dplyr::group_by(clustersAll) %>% dplyr::summarize(clusterSize = length(clustersAll))
-        # cat("Cluster Sizes: ")
-        # print(table(out$clusterSize))
-
-        adjacencyMatrix <- GraphAT::clust2Mat(clustersAll)
-        tmp <- sum(adjacencyMatrix)/2
-        # cat("Final number of links: ", tmp, "\n")
-        # cat("Links added: ", tmp - nrow(forHierarchical), "\n")
+        adjacencyMatrix <- cartridges:::clust2Mat(clustersAll)
 
         ################ need to get it to return the link col
         adjacencyMatrix[lower.tri(adjacencyMatrix)] <- 0
@@ -191,6 +193,8 @@ linksAnalysis <- function(pairs, predCol, myCutoff, myMethod, hash1, hash2) {
 
 
 ### modified from plot.PRROC from the PRROC package
+#' @importFrom DescTools AUC
+#' @import PRROC
 plotPRROC <- function(x, xlim = c(0, 1), ylim = c(0, 1), auc.main = TRUE,
     # auc.type = c("integral", "davis.goadrich"),
     legend = ifelse(is.logical(color) &
@@ -201,7 +205,7 @@ plotPRROC <- function(x, xlim = c(0, 1), ylim = c(0, 1), auc.main = TRUE,
         min.plot), maxminrand.col = grey(0.5), fill.color = grey(0.95),
     ...) {
     # auc.type <- match.arg(auc.type)
-    tmpAUC <- DescTools::AUC(x[, 1], x[, 2], na.rm = FALSE)
+    tmpAUC <- DescTools::AUC(c(1, x[, 1], 0), c(0, x[, 2], 1), na.rm = FALSE)
     min <- 0
     max <- 1
     if (is.null(xlab)) {
@@ -306,14 +310,17 @@ plotPRROC <- function(x, xlim = c(0, 1), ylim = c(0, 1), auc.main = TRUE,
 #'
 #' @param pairs pairs with `preds` column, a binary indicator for whether the
 #'   pair is linked after hierarchical clustering
-#' @param pred name of column with link, input as character, e.g. "minimax0.5"
+#' @param preds name of column with link, input as character, e.g. "minimax0.5"
 #' @param hash1 name of column with first item in comparison, e.g. "image1"
 #' @param hash2 name of column with second item in comparison, e.g. "image2"
+#' @param sizes whether to return cluster sizes or not, default TRUE
 #' @return data frame with three columns: `image`, the name of the image,
 #'   `cluster`, the cluster number the image is a member of, and `clusterSize`,
 #'   the size of that cluster
 #' @export
-getClust <- function(pairs, preds, hash1, hash2) {
+#' @importFrom dplyr group_by summarize left_join
+#' @importFrom magrittr "%>%"
+getClust <- function(pairs, preds, hash1, hash2, sizes = TRUE) {
     # tmp <- which(preds == 1)
     forHierarchical <- pairs[, c(hash1, hash2, preds)]
     hashes <- unique(c(forHierarchical[, hash1], forHierarchical[, hash2]))
@@ -340,12 +347,15 @@ getClust <- function(pairs, preds, hash1, hash2) {
     # tmp <- table(out$clusterSize)
     # largest <- as.numeric(names(tmp)[length(tmp)])
 
-    outClusters <- data.frame(image = names(clustersAll), cluster = clustersAll)
-    rownames(outClusters) <- NULL
-    `%>%` <- magrittr::`%>%`
-    clusterSizes <- outClusters %>% dplyr::group_by(cluster) %>% dplyr::summarize(clusterSize = length(cluster))
-    myClusters <- dplyr::left_join(outClusters, clusterSizes)
-    myClusters <- myClusters[order(myClusters$cluster), ]
-
-    return(myClusters)
+    outClusters <- data.frame(image = names(clustersAll), cluster = clustersAll, stringsAsFactors = FALSE)
+    if (sizes == TRUE) {
+        rownames(outClusters) <- NULL
+        `%>%` <- magrittr::`%>%`
+        clusterSizes <- outClusters %>% dplyr::group_by(cluster) %>% dplyr::summarize(clusterSize = length(cluster))
+        myClusters <- dplyr::left_join(outClusters, clusterSizes)
+        myClusters <- myClusters[order(-myClusters$clusterSize, myClusters$cluster), ]
+        return(myClusters)
+    } else {
+        return(outClusters)
+    }
 }

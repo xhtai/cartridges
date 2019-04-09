@@ -14,13 +14,16 @@ Imports:
 	EBImage,
 	methods,
 	Matrix,
-	magrittr
+	magrittr,
+	dplyr,
+	PRROC,
+	DescTools,
+	protoclust
 Suggests:
 	fields,
 	imager,
 	purrr,
-	dplyr,
 	plyr
 License: GPL-3
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

@@ -4,17 +4,19 @@
 \alias{getClust}
 \title{Going from links to clusters}
 \usage{
-getClust(pairs, preds, hash1, hash2)
+getClust(pairs, preds, hash1, hash2, sizes = TRUE)
 }
 \arguments{
 \item{pairs}{pairs with `preds` column, a binary indicator for whether the
 pair is linked after hierarchical clustering}
 
+\item{preds}{name of column with link, input as character, e.g. "minimax0.5"}
+
 \item{hash1}{name of column with first item in comparison, e.g. "image1"}
 
 \item{hash2}{name of column with second item in comparison, e.g. "image2"}
 
-\item{pred}{name of column with link, input as character, e.g. "minimax0.5"}
+\item{sizes}{whether to return cluster sizes or not, default TRUE}
 }
 \value{
 data frame with three columns: `image`, the name of the image,

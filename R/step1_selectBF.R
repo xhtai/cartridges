@@ -161,7 +161,7 @@ findFP <- function(fileName, primer) {
 }
 
 # ACKNOWLEDGEMENTS: the rest of the code in this file was adapted from Simon
-# Barthelmé, "A loop-free canny edge detector"
+# Barthelme, "A loop-free canny edge detector"
 # (http://dahtah.github.io/imager/canny.html)
 #' @importFrom magrittr "%>%"
 
